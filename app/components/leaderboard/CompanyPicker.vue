@@ -117,6 +117,8 @@ runAfterPaint(() => {
           </div>
         </NuxtLink>
       </div>
+
+      <LeaderboardFooter />
     </div>
   </main>
 </template>

@@ -102,6 +102,8 @@ function onSplashExitComplete() {
             />
           </template>
         </div>
+
+        <LeaderboardFooter />
       </div>
     </div>
   </main>
