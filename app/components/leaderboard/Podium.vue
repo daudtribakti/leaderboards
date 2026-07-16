@@ -10,6 +10,7 @@ const { playPodiumEntrance, gsap } = useLeaderboardAnimations()
 let podiumCtx: ReturnType<typeof gsap.context> | null = null
 let podiumTimeline: gsap.core.Timeline | null = null
 let hasPlayed = false
+const animationKey = ref(0)
 
 const first = computed(() => props.entries.find(e => e.rank === 1) ?? props.entries[0])
 const second = computed(() => props.entries.find(e => e.rank === 2) ?? props.entries[1])
@@ -24,10 +25,15 @@ function playEntrance() {
 
       podiumTimeline?.kill()
       podiumCtx?.revert()
-      podiumCtx = gsap.context(() => {
-        podiumTimeline = playPodiumEntrance(rootRef.value)
-      }, rootRef.value)
-      hasPlayed = true
+      animationKey.value += 1
+
+      nextTick(() => {
+        if (!rootRef.value) return
+        podiumCtx = gsap.context(() => {
+          podiumTimeline = playPodiumEntrance(rootRef.value)
+        }, rootRef.value)
+        hasPlayed = true
+      })
     })
   })
 }
@@ -58,11 +64,14 @@ onUnmounted(() => {
     aria-labelledby="podium-heading"
     class="mx-auto w-full max-w-7xl px-3 sm:px-5 lg:px-6"
   >
-    <div data-podium-heading class="mb-2 text-center sm:mb-2.5">
-      <h2 id="podium-heading" class="text-sm font-bold text-kalbe-green-dark sm:text-base">
+    <div data-podium-heading class="mb-3 text-center sm:mb-4">
+      <p class="text-[9px] font-semibold uppercase tracking-[0.2em] text-kalbe-green/70 sm:text-2xs">
+        Podium
+      </p>
+      <h2 id="podium-heading" class="mt-0.5 text-base font-bold text-kalbe-green-dark sm:text-lg">
         Top Performers
       </h2>
-      <p class="mt-0.5 text-[10px] text-slate-400 sm:text-2xs">
+      <p class="mt-1 text-[10px] text-slate-400 sm:text-2xs">
         Burn for Good champions
       </p>
     </div>
@@ -70,34 +79,54 @@ onUnmounted(() => {
     <div
       v-if="entries.length > 0"
       data-podium-arena
-      class="podium-arena px-2 pb-2.5 pt-3 sm:px-4 sm:pb-3.5 sm:pt-4"
+      class="podium-arena px-1.5 pb-0 pt-3 sm:px-5 sm:pt-5"
     >
-      <div class="relative flex items-end justify-center gap-1.5 px-0.5 sm:gap-3 lg:gap-4">
+      <div class="podium-grid relative px-0.5 sm:px-1">
         <div
           v-if="second"
           data-podium-card
-          class="min-w-0 flex-1 basis-0 sm:max-w-[180px]"
+          class="podium-card-slot"
         >
-          <LeaderboardPodiumCard :entry="second" :place="2" :score-delay="0.55" />
+          <LeaderboardPodiumCard
+            :entry="second"
+            :place="2"
+            :score-delay="0.45"
+            :hr-score-delay="0.9"
+            :animation-key="animationKey"
+          />
         </div>
 
         <div
           v-if="first"
           data-podium-card
           data-podium-champion
-          class="min-w-0 flex-[1.12] basis-0 sm:max-w-[200px]"
+          class="podium-card-slot podium-card-slot--champion"
         >
-          <LeaderboardPodiumCard :entry="first" :place="1" :score-delay="0.7" />
+          <LeaderboardPodiumCard
+            :entry="first"
+            :place="1"
+            :score-delay="0.55"
+            :hr-score-delay="1"
+            :animation-key="animationKey"
+          />
         </div>
 
         <div
           v-if="third"
           data-podium-card
-          class="min-w-0 flex-1 basis-0 sm:max-w-[180px]"
+          class="podium-card-slot"
         >
-          <LeaderboardPodiumCard :entry="third" :place="3" :score-delay="0.85" />
+          <LeaderboardPodiumCard
+            :entry="third"
+            :place="3"
+            :score-delay="0.65"
+            :hr-score-delay="1.1"
+            :animation-key="animationKey"
+          />
         </div>
       </div>
+
+      <div data-podium-floor class="podium-floor" aria-hidden="true" />
     </div>
   </section>
 </template>

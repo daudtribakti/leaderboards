@@ -28,3 +28,9 @@ export const COMPANY_SHORT_LABELS: Record<AllowedCompany, string> = {
   'PT Agroveta Husada Dharma': 'Agroveta',
   'Corporate Function': 'Corporate',
 }
+
+/** Label for calories calculated from heart rate data (API `total_points`). */
+export const HEART_RATE_CALORIES_LABEL = 'Kalori HR'
+
+/** Leaderboard developer display name override */
+export const DEVELOPER_EMPLOYEE_NAME = 'Daud Tri Bakti Purba'

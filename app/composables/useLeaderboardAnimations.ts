@@ -120,32 +120,141 @@ export function useLeaderboardAnimations() {
     if (!import.meta.client || !root) return null
 
     const heading = root.querySelector('[data-podium-heading]')
+    const arena = root.querySelector('[data-podium-arena]')
     const cards = root.querySelectorAll('[data-podium-card]')
+    const medals = root.querySelectorAll('[data-podium-medal]')
+    const avatars = root.querySelectorAll('[data-podium-avatar]')
+    const infos = root.querySelectorAll('[data-podium-info]')
+    const blocks = root.querySelectorAll('[data-podium-block]')
+    const floor = root.querySelector('[data-podium-floor]')
 
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
 
     if (heading) {
       tl.fromTo(
         heading,
-        { opacity: 0, y: -10 },
+        { opacity: 0, y: -12 },
         { opacity: 1, y: 0, duration: duration(0.55), immediateRender: true },
+      )
+    }
+
+    if (arena) {
+      tl.fromTo(
+        arena,
+        { opacity: 0, scale: 0.98 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: duration(0.7),
+          ease: 'power2.out',
+          immediateRender: true,
+          clearProps: 'transform,opacity',
+        },
+        heading ? '-=0.25' : 0,
       )
     }
 
     if (cards.length) {
       tl.fromTo(
         cards,
-        { opacity: 0, y: 24 },
+        { opacity: 0, y: 28 },
         {
           opacity: 1,
           y: 0,
-          duration: duration(0.9),
-          stagger: 0.12,
+          duration: duration(0.85),
+          stagger: 0.1,
+          ease: 'power3.out',
+          immediateRender: true,
+          clearProps: 'transform,opacity',
+        },
+        '-=0.45',
+      )
+    }
+
+    if (medals.length) {
+      tl.fromTo(
+        medals,
+        { opacity: 0, scale: 0.4, y: -8 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: duration(0.55),
+          stagger: 0.1,
+          ease: 'back.out(2.2)',
+          immediateRender: true,
+          clearProps: 'transform,opacity',
+        },
+        '-=0.55',
+      )
+    }
+
+    if (avatars.length) {
+      tl.fromTo(
+        avatars,
+        { opacity: 0, scale: 0.55 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: duration(0.6),
+          stagger: 0.1,
+          ease: 'back.out(1.8)',
+          immediateRender: true,
+          clearProps: 'transform,opacity',
+        },
+        '-=0.45',
+      )
+    }
+
+    if (infos.length) {
+      tl.fromTo(
+        infos,
+        { opacity: 0, y: 14 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: duration(0.55),
+          stagger: 0.1,
           ease: 'power2.out',
           immediateRender: true,
           clearProps: 'transform,opacity',
         },
-        heading ? '-=0.2' : 0,
+        '-=0.4',
+      )
+    }
+
+    if (blocks.length) {
+      tl.fromTo(
+        blocks,
+        { scaleY: 0, opacity: 0.6 },
+        {
+          scaleY: 1,
+          opacity: 1,
+          duration: duration(0.85),
+          stagger: 0.1,
+          ease: 'power3.out',
+          transformOrigin: 'bottom center',
+          immediateRender: true,
+          clearProps: 'transform,opacity',
+        },
+        '-=0.35',
+      )
+    }
+
+    if (floor) {
+      tl.fromTo(
+        floor,
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: duration(0.5),
+          ease: 'power2.out',
+          transformOrigin: 'center center',
+          immediateRender: true,
+          clearProps: 'transform,opacity',
+        },
+        '-=0.5',
       )
     }
 

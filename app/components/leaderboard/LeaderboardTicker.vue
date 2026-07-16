@@ -15,7 +15,7 @@ defineProps<{
     :class="embedded ? '' : 'mx-auto w-full max-w-7xl px-4 pt-3 sm:px-6 lg:px-8'"
   >
     <div
-      class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+      class="grid grid-cols-1 gap-1.5 min-[420px]:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
     >
       <article
         v-for="entry in entries"
@@ -38,9 +38,11 @@ defineProps<{
           </span>
         </div>
         <div class="min-w-0 flex-1">
-          <p class="truncate text-[10px] font-medium text-slate-700 sm:text-xs">
-            {{ entry.employeeName }}
-          </p>
+          <LeaderboardEmployeeName
+            :name="entry.employeeName"
+            size="xs"
+            class="min-w-0"
+          />
           <p class="score-text mt-0.5 inline-flex items-center gap-0.5 text-[10px] sm:text-xs">
             <TrendingUp class="h-2.5 w-2.5 text-kalbe-lime" aria-hidden="true" />
             {{ formatCalories(entry.currentPoints) }}

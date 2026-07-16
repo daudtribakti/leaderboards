@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { TrendingDown, TrendingUp } from 'lucide-vue-next'
 import type { LeaderboardEntry } from '~/types/leaderboard'
-import { avatarColorFromName, formatCalories, getInitials } from '~/utils/leaderboard'
+import { HEART_RATE_CALORIES_LABEL } from '~/constants/leaderboard'
+import { avatarColorFromName, formatCalories, getInitials, isDeveloperEmployee } from '~/utils/leaderboard'
 
 const props = defineProps<{
   entry: LeaderboardEntry
 }>()
 
+const displayName = computed(() => props.entry.employeeName.trim())
+const isDeveloper = computed(() => isDeveloperEmployee(props.entry.employeeName))
 const initials = computed(() => getInitials(props.entry.employeeName))
 const avatarBg = computed(() => avatarColorFromName(props.entry.employeeName))
 
@@ -27,7 +30,7 @@ const gapLabel = computed(() => {
   <article
     data-list-row
     class="group flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-2.5 py-1.5 shadow-soft transition-all duration-200 hover:border-kalbe-green/20 hover:shadow-card sm:gap-2.5 sm:px-3 sm:py-2"
-    :aria-label="`Rank ${entry.rank}, ${entry.employeeName}, ${entry.currentPoints} calories`"
+    :aria-label="`Rank ${entry.rank}, ${displayName}${isDeveloper ? ' IT' : ''}, ${entry.currentPoints} calories`"
   >
     <div
       class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white sm:h-8 sm:w-8 sm:text-xs"
@@ -38,11 +41,9 @@ const gapLabel = computed(() => {
     </div>
 
     <div class="min-w-0 flex-1">
-      <div class="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
-        <p class="truncate text-xs font-semibold text-slate-800 sm:text-sm">
-          {{ entry.employeeName }}
-        </p>
-        <p class="truncate text-[9px] text-slate-400 sm:text-2xs">
+      <div class="flex flex-col gap-0.5 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-1.5 sm:gap-y-0">
+        <LeaderboardEmployeeName :name="entry.employeeName" class="min-w-0 max-w-full" />
+        <p class="truncate text-[10px] text-slate-400 sm:text-2xs">
           {{ companyShort }} · {{ entry.category }}
         </p>
       </div>
@@ -52,8 +53,10 @@ const gapLabel = computed(() => {
           <TrendingUp class="h-3 w-3 text-kalbe-lime" aria-hidden="true" />
           {{ formatCalories(entry.currentPoints) }}
         </p>
-        <p class="hidden text-[10px] text-slate-400 sm:inline">
-          Total {{ formatCalories(entry.totalPoints) }}
+        <p class="hidden text-[10px] text-slate-400 min-[400px]:inline">
+          <span class="min-[400px]:inline sm:hidden">HR</span>
+          <span class="hidden sm:inline">{{ HEART_RATE_CALORIES_LABEL }}</span>
+          {{ formatCalories(entry.totalPoints) }}
         </p>
         <span
           v-if="gapLabel"

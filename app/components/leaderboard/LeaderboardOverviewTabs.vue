@@ -16,9 +16,9 @@ const { scaleIn, staggerIn, fadeSlideUp, runAfterPaint } = useLeaderboardAnimati
 
 const activeTab = ref<OverviewTab>('stats')
 
-const tabs: { id: OverviewTab, label: string, icon: typeof BarChart3 }[] = [
-  { id: 'stats', label: 'Statistik', icon: BarChart3 },
-  { id: 'hot', label: 'Hot Performers', icon: Flame },
+const tabs: { id: OverviewTab, label: string, shortLabel: string, icon: typeof BarChart3 }[] = [
+  { id: 'stats', label: 'Statistik', shortLabel: 'Stats', icon: BarChart3 },
+  { id: 'hot', label: 'Hot Performers', shortLabel: 'Hot', icon: Flame },
 ]
 
 function animateActivePanel(tab: OverviewTab) {
@@ -71,15 +71,16 @@ runAfterPaint(() => {
           :key="tab.id"
           type="button"
           role="tab"
-          class="flex flex-1 cursor-pointer items-center justify-center gap-1 px-2 py-1.5 text-2xs font-semibold transition-all duration-200 sm:gap-1.5 sm:text-xs"
+          class="flex flex-1 cursor-pointer items-center justify-center gap-1 px-2 py-2 text-xs font-semibold transition-all duration-200 sm:gap-1.5 sm:py-1.5 sm:text-xs"
           :class="activeTab === tab.id
             ? 'border-b-2 border-kalbe-green bg-kalbe-mint/40 text-kalbe-green-deep'
             : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'"
           :aria-selected="activeTab === tab.id"
           @click="activeTab = tab.id"
         >
-          <component :is="tab.icon" class="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-          {{ tab.label }}
+          <component :is="tab.icon" class="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+          <span class="sm:hidden">{{ tab.shortLabel }}</span>
+          <span class="hidden sm:inline">{{ tab.label }}</span>
         </button>
       </div>
 

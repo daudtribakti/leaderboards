@@ -75,14 +75,14 @@ runAfterPaint(() => {
 
     <div
       data-filter-bar
-      class="flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-100 bg-white/90 px-2 py-1.5 shadow-soft backdrop-blur-xl sm:gap-2 sm:px-2.5"
+      class="flex flex-col gap-2 rounded-xl border border-slate-100 bg-white/90 px-2 py-2 shadow-soft backdrop-blur-xl sm:flex-row sm:flex-wrap sm:items-center sm:gap-2 sm:px-2.5 sm:py-1.5"
     >
       <div class="flex items-center gap-0.5 rounded-lg bg-slate-50 p-0.5" role="group" aria-label="Gender filter">
         <button
           v-for="option in genderOptions"
           :key="option.value"
           type="button"
-          class="cursor-pointer rounded-md px-2 py-0.5 text-[11px] font-medium transition-all duration-200 sm:text-xs"
+          class="flex-1 cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium transition-all duration-200 sm:flex-none sm:px-2 sm:py-0.5 sm:text-xs"
           :class="genderFilter === option.value ? 'chip-active' : 'bg-transparent text-slate-500 hover:text-kalbe-green-deep'"
           :aria-pressed="genderFilter === option.value"
           @click="genderFilter = option.value"
@@ -111,15 +111,15 @@ runAfterPaint(() => {
         </button>
       </div>
 
-      <div class="ml-auto flex items-center gap-1">
-        <div class="relative">
-          <Search class="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+      <div class="flex w-full items-center gap-1.5 sm:ml-auto sm:w-auto">
+        <div class="relative min-w-0 flex-1 sm:flex-none">
+          <Search class="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <input
             id="employee-search"
             v-model="localSearch"
             type="search"
-            placeholder="Search…"
-            class="w-24 rounded-lg border-0 bg-slate-50 py-1 pl-7 pr-6 text-[11px] text-slate-700 placeholder:text-slate-400 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:w-36 sm:text-xs lg:w-44"
+            placeholder="Search employee…"
+            class="w-full rounded-lg border-0 bg-slate-50 py-1.5 pl-8 pr-8 text-xs text-slate-700 placeholder:text-slate-400 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:w-36 sm:py-1 sm:pl-7 sm:pr-6 sm:text-xs lg:w-44"
             autocomplete="off"
             aria-label="Search employee"
           >
@@ -134,12 +134,12 @@ runAfterPaint(() => {
           </button>
         </div>
 
-        <div class="relative">
-          <SlidersHorizontal class="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+        <div class="relative shrink-0">
+          <SlidersHorizontal class="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <select
             id="sort-by"
             v-model="sortBy"
-            class="cursor-pointer appearance-none rounded-lg border-0 bg-slate-50 py-1 pl-7 pr-5 text-[11px] font-medium text-slate-700 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:text-xs"
+            class="cursor-pointer appearance-none rounded-lg border-0 bg-slate-50 py-1.5 pl-8 pr-6 text-xs font-medium text-slate-700 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:py-1 sm:pl-7 sm:pr-5 sm:text-xs"
             aria-label="Sort by"
           >
             <option

@@ -33,24 +33,24 @@ const cards = computed(() => [
       Challenge overview
     </h2>
 
-    <div class="grid grid-cols-3 gap-1.5 sm:gap-2 lg:grid-cols-6">
+    <div class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2 lg:grid-cols-6">
       <article
         v-for="card in cards"
         :key="card.key"
         data-stat-card
-        class="flex items-center gap-1.5 rounded-lg border border-slate-100 bg-slate-50/50 px-1.5 py-1.5 sm:gap-2 sm:px-2 sm:py-1.5"
+        class="flex items-center gap-1.5 rounded-lg border border-slate-100 bg-slate-50/50 px-2 py-1.5 sm:gap-2 sm:px-2"
       >
         <div
-          class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md sm:h-7 sm:w-7"
+          class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md sm:h-7 sm:w-7"
           :class="[card.bg, card.tone]"
         >
-          <component :is="card.icon" class="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+          <component :is="card.icon" class="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
         </div>
         <div class="min-w-0">
-          <p class="truncate text-[9px] font-medium leading-tight text-slate-400 sm:text-2xs">
+          <p class="truncate text-[10px] font-medium leading-tight text-slate-400 sm:text-2xs">
             {{ card.label }}
           </p>
-          <p class="stat-value text-xs text-kalbe-green-dark sm:text-sm">
+          <p class="stat-value text-sm text-kalbe-green-dark sm:text-sm">
             <LeaderboardAnimatedCounter :value="card.value" />
           </p>
         </div>

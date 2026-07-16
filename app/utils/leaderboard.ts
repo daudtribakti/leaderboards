@@ -1,4 +1,4 @@
-import { ALLOWED_COMPANIES } from '~/constants/leaderboard'
+import { ALLOWED_COMPANIES, DEVELOPER_EMPLOYEE_NAME } from '~/constants/leaderboard'
 import type {
   CompanyFilter,
   Gender,
@@ -165,6 +165,10 @@ export function avatarColorFromName(name: string): string {
   }
   const hue = hues[Math.abs(hash) % hues.length]
   return `hsl(${hue} 52% 38%)`
+}
+
+export function isDeveloperEmployee(name: string): boolean {
+  return name.trim() === DEVELOPER_EMPLOYEE_NAME
 }
 
 export function formatCalories(value: number): string {

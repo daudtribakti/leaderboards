@@ -1,65 +1,133 @@
 <script setup lang="ts">
-import { CountUp } from 'countup.js'
+import { formatCalories } from '~/utils/leaderboard'
 
 const props = withDefaults(defineProps<{
   value: number
   duration?: number
   startDelay?: number
-  decimals?: number
-  prefix?: string
-  suffix?: string
-  separator?: string
+  play?: boolean
 }>(), {
-  duration: 1.4,
+  duration: 2.2,
   startDelay: 0,
-  decimals: 0,
-  prefix: '',
-  suffix: '',
-  separator: ',',
+  play: true,
 })
 
-const el = ref<HTMLElement | null>(null)
-const prefersReducedMotion = usePreferredReducedMotion()
-let countUp: CountUp | null = null
+const display = ref(0)
+const isClient = ref(false)
+let delayTimer: ReturnType<typeof setTimeout> | null = null
+let rafId = 0
+let animationStart = 0
+let animationFrom = 0
+let animationTo = 0
 
-function run(to: number) {
-  if (!el.value) return
+const formatted = computed(() => formatCalories(display.value))
 
-  if (prefersReducedMotion.value) {
-    el.value.textContent = `${props.prefix}${new Intl.NumberFormat('en-US').format(to)}${props.suffix}`
+function easeOutCubic(progress: number) {
+  return 1 - (1 - progress) ** 3
+}
+
+function cancelAnimation() {
+  if (delayTimer) {
+    clearTimeout(delayTimer)
+    delayTimer = null
+  }
+  if (rafId) {
+    cancelAnimationFrame(rafId)
+    rafId = 0
+  }
+  animationStart = 0
+}
+
+function setDisplay(value: number) {
+  display.value = Math.round(value)
+}
+
+function runCountUp(from: number, to: number) {
+  cancelAnimation()
+  animationFrom = from
+  animationTo = to
+  setDisplay(from)
+
+  if (to === from) return
+
+  const durationMs = Math.max(props.duration, 0.8) * 1000
+
+  const step = (timestamp: number) => {
+    if (!animationStart) animationStart = timestamp
+
+    const elapsed = timestamp - animationStart
+    const progress = Math.min(elapsed / durationMs, 1)
+    const current = animationFrom + (animationTo - animationFrom) * easeOutCubic(progress)
+
+    setDisplay(current)
+
+    if (progress < 1) {
+      rafId = requestAnimationFrame(step)
+      return
+    }
+
+    setDisplay(animationTo)
+    rafId = 0
+    animationStart = 0
+  }
+
+  rafId = requestAnimationFrame(step)
+}
+
+function scheduleStart(fromZero = true) {
+  cancelAnimation()
+
+  if (!isClient.value || !props.play) {
+    setDisplay(fromZero ? 0 : display.value)
     return
   }
 
-  if (!countUp) {
-    countUp = new CountUp(el.value, to, {
-      duration: props.duration,
-      decimalPlaces: props.decimals,
-      prefix: props.prefix,
-      suffix: props.suffix,
-      separator: props.separator,
-      useEasing: true,
-    })
-    if (!countUp.error) countUp.start()
+  const start = () => {
+    if (!props.play) return
+    runCountUp(fromZero ? 0 : display.value, props.value)
+  }
+
+  if (props.startDelay > 0) {
+    delayTimer = setTimeout(start, props.startDelay * 1000)
     return
   }
 
-  countUp.update(to)
+  start()
 }
 
 onMounted(() => {
-  if (props.startDelay > 0) {
-    setTimeout(() => run(props.value), props.startDelay * 1000)
-    return
-  }
-
-  run(props.value)
+  isClient.value = true
+  if (props.play) scheduleStart(true)
 })
 
-watch(() => props.value, (next) => {
-  run(next)
+watch(
+  () => props.play,
+  (play) => {
+    if (!isClient.value) return
+
+    if (play) {
+      nextTick(() => scheduleStart(true))
+      return
+    }
+
+    cancelAnimation()
+    setDisplay(0)
+  },
+)
+
+watch(
+  () => props.value,
+  (next, prev) => {
+    if (!isClient.value || !props.play || next === prev) return
+    runCountUp(display.value, next)
+  },
+)
+
+onUnmounted(() => {
+  cancelAnimation()
 })
 </script>
 
 <template>
-  <span ref="el">0</span>
+  <span class="tabular-nums">{{ formatted }}</span>
 </template>

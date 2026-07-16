@@ -47,7 +47,7 @@ function onSplashExitComplete() {
 </script>
 
 <template>
-  <main class="relative min-h-screen overflow-x-hidden pb-8">
+  <main class="relative min-h-screen overflow-x-hidden pb-6 sm:pb-8">
     <LeaderboardSplashScreen
       v-if="showSplash"
       :progress="loadProgress"
@@ -73,7 +73,7 @@ function onSplashExitComplete() {
           />
         </div>
 
-        <div v-else-if="hasLoaded" class="space-y-2.5 pt-1.5 sm:space-y-3">
+        <div v-else-if="hasLoaded" class="space-y-2 pt-1 sm:space-y-3 sm:pt-1.5">
           <LeaderboardFilter
             v-model:gender="genderFilter"
             v-model:search="searchQuery"

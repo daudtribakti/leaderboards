@@ -11,7 +11,7 @@ export type LeaderboardLoadStage =
   | 'complete'
   | 'error'
 
-/** [ranking, employee_name, employee_id, company, category, current_points, total_points, sales_id] */
+/** [ranking, employee_name, employee_id, company, category, current_points, heart_rate_calories, sales_id] */
 export type RawLeaderboardRow = [
   number,
   string,
