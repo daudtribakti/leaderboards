@@ -17,18 +17,18 @@ const shortLabel = computed(() => {
 
 const toneClass = computed(() => {
   if (props.company === 'PT Agroveta Husada Dharma') {
-    return 'border-accent-blue/40 bg-accent-blue/15 text-sky-200'
+    return 'bg-emerald-50 text-emerald-700'
   }
   if (props.company === 'Corporate Function') {
-    return 'border-accent-orange/40 bg-accent-orange/15 text-orange-200'
+    return 'bg-sky-50 text-sky-700'
   }
-  return 'border-white/15 bg-white/10 text-white/80'
+  return 'bg-slate-50 text-slate-600'
 })
 </script>
 
 <template>
   <span
-    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium tracking-wide"
+    class="inline-flex items-center rounded-md px-1.5 py-0.5 text-2xs font-medium"
     :class="toneClass"
     :title="company"
   >

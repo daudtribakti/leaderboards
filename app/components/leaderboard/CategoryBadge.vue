@@ -4,17 +4,17 @@ defineProps<{
 }>()
 
 const toneMap: Record<string, string> = {
-  Purpose: 'border-rose-400/30 bg-rose-500/10 text-rose-200',
-  Growth: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
-  Hope: 'border-violet-400/30 bg-violet-500/10 text-violet-200',
-  Journey: 'border-amber-400/30 bg-amber-500/10 text-amber-200',
+  Purpose: 'bg-violet-50 text-violet-700',
+  Growth: 'bg-lime-50 text-lime-800',
+  Hope: 'bg-sky-50 text-sky-700',
+  Journey: 'bg-amber-50 text-amber-700',
 }
 </script>
 
 <template>
   <span
-    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium"
-    :class="toneMap[category] ?? 'border-white/15 bg-white/10 text-white/70'"
+    class="inline-flex items-center rounded-md px-1.5 py-0.5 text-2xs font-medium"
+    :class="toneMap[category] ?? 'bg-slate-50 text-slate-600'"
   >
     {{ category }}
   </span>

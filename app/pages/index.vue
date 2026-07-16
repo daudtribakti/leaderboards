@@ -1,6 +1,5 @@
 <script setup lang="ts">
 definePageMeta({
-  // Live leaderboard data is fetched client-side only — avoid SSR/client hydration mismatch
   ssr: false,
 })
 
@@ -36,7 +35,7 @@ const tickerEntries = computed(() => {
 </script>
 
 <template>
-  <main class="relative min-h-screen overflow-x-hidden pb-16">
+  <main class="relative min-h-screen overflow-x-hidden pb-12">
     <LeaderboardBackgroundAnimatedBackground />
     <LeaderboardBackgroundFloatingParticles />
 
@@ -45,26 +44,26 @@ const tickerEntries = computed(() => {
 
       <LeaderboardLoadingSkeleton v-if="isLoading" />
 
-      <div v-else-if="hasError" class="px-4 py-12 sm:px-6 lg:px-8">
+      <div v-else-if="hasError" class="px-4 py-10 sm:px-6 lg:px-8">
         <LeaderboardErrorState
           :message="error?.message || 'Failed to fetch live leaderboard data.'"
           @retry="refresh()"
         />
       </div>
 
-      <div v-else-if="hasLoaded" class="space-y-6 pt-2 sm:space-y-8 sm:pt-4">
-        <LeaderboardTicker
-          v-if="tickerEntries.length"
-          :entries="tickerEntries"
-        />
-
-        <LeaderboardStats :stats="stats" />
-
+      <div v-else-if="hasLoaded" class="space-y-4 pt-2 sm:space-y-5">
+        <!-- Filter always visible -->
         <LeaderboardFilter
           v-model:gender="genderFilter"
           v-model:company="companyFilter"
           v-model:search="searchQuery"
           v-model:sort="sortBy"
+        />
+
+        <!-- Stats & Hot in tabs (not stacked) -->
+        <LeaderboardOverviewTabs
+          :stats="stats"
+          :ticker-entries="tickerEntries"
         />
 
         <div v-if="isEmpty" class="px-4 py-8 sm:px-6 lg:px-8">
@@ -73,12 +72,6 @@ const tickerEntries = computed(() => {
 
         <template v-else>
           <LeaderboardPodium v-if="topThree.length" :entries="topThree" />
-
-          <div
-            v-if="topThree.length && restEntries.length"
-            class="mx-auto h-px w-[80%] max-w-3xl bg-gradient-to-r from-transparent via-[var(--neon-lime)]/60 to-transparent shadow-[0_0_16px_rgba(163,230,53,0.45)]"
-            aria-hidden="true"
-          />
 
           <LeaderboardList
             v-if="restEntries.length"

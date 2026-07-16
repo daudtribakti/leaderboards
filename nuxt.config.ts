@@ -23,19 +23,18 @@ export default defineNuxtConfig({
           name: 'description',
           content: 'Track the best performers from PT Agroveta Husada Dharma and Corporate Function.',
         },
-        { name: 'theme-color', content: '#0f0f1b' },
+        { name: 'theme-color', content: '#15803D' },
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700;800&display=swap',
         },
       ],
       htmlAttrs: {
         lang: 'en',
-        class: 'dark',
       },
     },
   },

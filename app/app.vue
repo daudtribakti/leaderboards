@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen overflow-x-hidden bg-[var(--bg-deep)] text-white">
+  <div class="relative min-h-screen overflow-x-hidden bg-[var(--bg-page)] text-[var(--text-main)]">
     <NuxtRouteAnnouncer />
     <NuxtPage />
   </div>

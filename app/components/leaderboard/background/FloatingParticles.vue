@@ -13,14 +13,14 @@ const prefersReducedMotion = usePreferredReducedMotion()
 
 const particles = computed<Particle[]>(() => {
   if (prefersReducedMotion.value) return []
-  return Array.from({ length: 28 }, (_, i) => ({
+  return Array.from({ length: 12 }, (_, i) => ({
     id: i,
     left: Math.random() * 100,
     top: Math.random() * 100,
-    size: 1.5 + Math.random() * 3,
+    size: 1.5 + Math.random() * 2,
     delay: Math.random() * 6,
-    duration: 8 + Math.random() * 10,
-    opacity: 0.15 + Math.random() * 0.35,
+    duration: 10 + Math.random() * 8,
+    opacity: 0.15 + Math.random() * 0.2,
   }))
 })
 </script>
@@ -30,7 +30,7 @@ const particles = computed<Particle[]>(() => {
     <span
       v-for="p in particles"
       :key="p.id"
-      class="absolute rounded-full bg-white"
+      class="absolute rounded-full bg-kalbe-lime"
       :style="{
         left: `${p.left}%`,
         top: `${p.top}%`,
@@ -38,7 +38,6 @@ const particles = computed<Particle[]>(() => {
         height: `${p.size}px`,
         opacity: p.opacity,
         animation: `particle-float ${p.duration}s ease-in-out ${p.delay}s infinite`,
-        boxShadow: '0 0 6px rgba(245, 197, 66, 0.35)',
       }"
     />
   </div>
@@ -46,15 +45,7 @@ const particles = computed<Particle[]>(() => {
 
 <style scoped>
 @keyframes particle-float {
-  0%,
-  100% {
-    transform: translateY(0) translateX(0);
-  }
-  33% {
-    transform: translateY(-18px) translateX(8px);
-  }
-  66% {
-    transform: translateY(10px) translateX(-6px);
-  }
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-12px) translateX(4px); }
 }
 </style>

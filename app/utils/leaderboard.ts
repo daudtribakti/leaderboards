@@ -156,13 +156,13 @@ export function getInitials(name: string): string {
 }
 
 export function avatarColorFromName(name: string): string {
-  const hues = [0, 14, 32, 200, 220, 260, 310]
+  const hues = [142, 155, 168, 130, 175, 120, 145]
   let hash = 0
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash)
   }
   const hue = hues[Math.abs(hash) % hues.length]
-  return `hsl(${hue} 65% 42%)`
+  return `hsl(${hue} 45% 42%)`
 }
 
 export function formatCalories(value: number): string {

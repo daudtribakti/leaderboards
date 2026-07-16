@@ -2,81 +2,103 @@
 import type { LeaderboardEntry } from '~/types/leaderboard'
 import { entryKey } from '~/utils/leaderboard'
 
-defineProps<{
+const PAGE_SIZE = 15
+
+const props = defineProps<{
   entries: LeaderboardEntry[]
 }>()
+
+const rootRef = ref<HTMLElement | null>(null)
+const listRef = ref<HTMLElement | null>(null)
+const { fadeSlideUp, revealListRows } = useLeaderboardAnimations()
+
+const currentPage = ref(1)
+
+watch(
+  () => props.entries.map(e => entryKey(e)).join(','),
+  () => { currentPage.value = 1 },
+)
+
+function onPageChange(page: number) {
+  currentPage.value = page
+  nextTick(() => {
+    revealListRows(listRef.value)
+    document.getElementById('list-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
+}
+
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(props.entries.length / PAGE_SIZE)),
+)
+
+const paginatedEntries = computed(() => {
+  const start = (currentPage.value - 1) * PAGE_SIZE
+  return props.entries.slice(start, start + PAGE_SIZE)
+})
+
+watch(totalPages, (total) => {
+  if (currentPage.value > total) currentPage.value = total
+})
+
+onMounted(() => {
+  nextTick(() => {
+    if (rootRef.value) {
+      fadeSlideUp(rootRef.value.querySelectorAll('[data-list-header]'), {
+        y: 16,
+        stagger: 0.06,
+        delay: 0.35,
+        duration: 0.5,
+      })
+    }
+  })
+})
+
+watch(paginatedEntries, () => {
+  nextTick(() => revealListRows(listRef.value))
+}, { flush: 'post' })
 </script>
 
 <template>
   <section
+    ref="rootRef"
     aria-labelledby="list-heading"
-    class="mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6 lg:px-8"
+    class="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
   >
-    <div class="section-divider mb-4 sm:mb-6">
+    <div data-list-header class="section-divider mb-3">
       <h2
         id="list-heading"
-        class="shrink-0 font-display text-sm font-bold tracking-wide text-[var(--gold)] sm:text-base lg:text-lg"
+        class="shrink-0 text-xs font-semibold uppercase tracking-widest text-kalbe-green"
       >
         Top Ranking
       </h2>
     </div>
 
-    <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
-      <p class="text-xs text-white/45 sm:text-sm">
-        Full standings ranked by current calories
+    <div data-list-header class="mb-3 flex items-center justify-between gap-2">
+      <p class="text-xs text-slate-400">
+        Ranked by current calories
       </p>
-      <p class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/60">
+      <span class="rounded-full bg-kalbe-mint px-2.5 py-0.5 text-2xs font-semibold text-kalbe-green-deep">
         {{ entries.length }} competitors
-      </p>
+      </span>
     </div>
 
-    <!-- Desktop column hints -->
     <div
-      class="mb-2 hidden grid-cols-[1fr_auto_auto] gap-4 px-5 text-[10px] font-semibold uppercase tracking-wider text-white/30 lg:grid"
-      aria-hidden="true"
-    >
-      <span>Competitor</span>
-      <span class="w-[140px] text-right">Calories</span>
-      <span class="w-10 text-center">Rank</span>
-    </div>
-
-    <TransitionGroup
-      name="lb-list"
-      tag="div"
-      class="relative flex flex-col gap-2 sm:gap-3"
+      ref="listRef"
+      class="flex flex-col gap-2"
     >
       <LeaderboardRow
-        v-for="entry in entries"
+        v-for="entry in paginatedEntries"
         :key="entryKey(entry)"
         :entry="entry"
       />
-    </TransitionGroup>
+    </div>
+
+    <LeaderboardPagination
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      :total-items="entries.length"
+      :page-size="PAGE_SIZE"
+      @update:current-page="onPageChange"
+    />
   </section>
 </template>
-
-<style scoped>
-.lb-list-move,
-.lb-list-enter-active,
-.lb-list-leave-active {
-  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.lb-list-enter-from,
-.lb-list-leave-to {
-  opacity: 0;
-  transform: translateY(16px) scale(0.98);
-}
-
-.lb-list-leave-active {
-  position: absolute;
-  width: 100%;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lb-list-move,
-  .lb-list-enter-active,
-  .lb-list-leave-active {
-    transition: none;
-  }
-}
-</style>

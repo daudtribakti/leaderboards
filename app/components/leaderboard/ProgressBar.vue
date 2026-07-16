@@ -19,7 +19,7 @@ watch(() => props.percent, syncWidth)
 
 <template>
   <div
-    class="h-2 w-full overflow-hidden rounded-full bg-white/10"
+    class="h-1 w-full overflow-hidden rounded-full bg-slate-100"
     role="progressbar"
     :aria-valuenow="Math.round(percent)"
     aria-valuemin="0"
@@ -28,7 +28,7 @@ watch(() => props.percent, syncWidth)
   >
     <div
       ref="barRef"
-      class="h-full w-0 rounded-full bg-gradient-to-r from-[var(--kalbe-red)] via-[var(--accent-orange)] to-[var(--gold)] shadow-[0_0_12px_rgba(245,197,66,0.45)]"
+      class="h-full w-0 rounded-full bg-gradient-to-r from-kalbe-green to-kalbe-lime"
     />
   </div>
 </template>
