@@ -27,30 +27,30 @@ const cards = computed(() => [
 <template>
   <section
     :aria-labelledby="embedded ? undefined : 'stats-heading'"
-    :class="embedded ? '' : 'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8'"
+    :class="embedded ? '' : 'mx-auto w-full max-w-7xl px-3 sm:px-5 lg:px-6'"
   >
     <h2 v-if="!embedded" id="stats-heading" class="sr-only">
       Challenge overview
     </h2>
 
-    <div class="grid grid-cols-3 gap-2 lg:grid-cols-6">
+    <div class="grid grid-cols-3 gap-1.5 sm:gap-2 lg:grid-cols-6">
       <article
         v-for="card in cards"
         :key="card.key"
         data-stat-card
-        class="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/50 px-2.5 py-2 sm:gap-2.5 sm:px-3 sm:py-2.5"
+        class="flex items-center gap-1.5 rounded-lg border border-slate-100 bg-slate-50/50 px-1.5 py-1.5 sm:gap-2 sm:px-2 sm:py-1.5"
       >
         <div
-          class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg sm:h-8 sm:w-8"
+          class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md sm:h-7 sm:w-7"
           :class="[card.bg, card.tone]"
         >
-          <component :is="card.icon" class="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+          <component :is="card.icon" class="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
         </div>
         <div class="min-w-0">
-          <p class="truncate text-2xs font-medium text-slate-400">
+          <p class="truncate text-[9px] font-medium leading-tight text-slate-400 sm:text-2xs">
             {{ card.label }}
           </p>
-          <p class="stat-value text-sm text-kalbe-green-dark sm:text-base">
+          <p class="stat-value text-xs text-kalbe-green-dark sm:text-sm">
             <LeaderboardAnimatedCounter :value="card.value" />
           </p>
         </div>

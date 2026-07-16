@@ -5,6 +5,15 @@ export const ALLOWED_COMPANIES = [
 
 export type AllowedCompany = (typeof ALLOWED_COMPANIES)[number]
 
+export const COMPANY_ROUTES = {
+  agroveta: 'PT Agroveta Husada Dharma',
+  corporate: 'Corporate Function',
+} as const
+
+export type CompanySlug = keyof typeof COMPANY_ROUTES
+
+export const COMPANY_SLUGS = Object.keys(COMPANY_ROUTES) as CompanySlug[]
+
 export const API_URLS = {
   male: 'https://event.cause.id/kalbedonorkalori/leaderboard-top-male.php',
   female: 'https://event.cause.id/kalbedonorkalori/leaderboard-top-female.php',

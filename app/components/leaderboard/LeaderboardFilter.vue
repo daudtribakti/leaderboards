@@ -2,8 +2,14 @@
 import { Search, X, SlidersHorizontal } from 'lucide-vue-next'
 import type { CompanyFilter, GenderFilter, SortBy } from '~/types/leaderboard'
 
+withDefaults(defineProps<{
+  hideCompanyFilter?: boolean
+}>(), {
+  hideCompanyFilter: false,
+})
+
 const genderFilter = defineModel<GenderFilter>('gender', { required: true })
-const companyFilter = defineModel<CompanyFilter>('company', { required: true })
+const companyFilter = defineModel<CompanyFilter>('company')
 const searchQuery = defineModel<string>('search', { required: true })
 const sortBy = defineModel<SortBy>('sort', { required: true })
 
@@ -61,7 +67,7 @@ runAfterPaint(() => {
   <section
     ref="rootRef"
     aria-labelledby="filter-heading"
-    class="sticky top-[57px] z-30 mx-auto w-full max-w-7xl px-4 sm:top-[65px] sm:px-6 lg:px-8"
+    class="sticky top-[44px] z-30 mx-auto w-full max-w-7xl px-3 sm:top-[48px] sm:px-5 lg:px-6"
   >
     <h2 id="filter-heading" class="sr-only">
       Filter and sort leaderboard
@@ -69,14 +75,14 @@ runAfterPaint(() => {
 
     <div
       data-filter-bar
-      class="flex flex-wrap items-center gap-2 rounded-2xl border border-slate-100 bg-white/90 px-2.5 py-2 shadow-soft backdrop-blur-xl sm:gap-2.5 sm:px-3"
+      class="flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-100 bg-white/90 px-2 py-1.5 shadow-soft backdrop-blur-xl sm:gap-2 sm:px-2.5"
     >
-      <div class="flex items-center gap-0.5 rounded-xl bg-slate-50 p-0.5" role="group" aria-label="Gender filter">
+      <div class="flex items-center gap-0.5 rounded-lg bg-slate-50 p-0.5" role="group" aria-label="Gender filter">
         <button
           v-for="option in genderOptions"
           :key="option.value"
           type="button"
-          class="cursor-pointer rounded-lg px-2.5 py-1 text-xs font-medium transition-all duration-200"
+          class="cursor-pointer rounded-md px-2 py-0.5 text-[11px] font-medium transition-all duration-200 sm:text-xs"
           :class="genderFilter === option.value ? 'chip-active' : 'bg-transparent text-slate-500 hover:text-kalbe-green-deep'"
           :aria-pressed="genderFilter === option.value"
           @click="genderFilter = option.value"
@@ -85,12 +91,17 @@ runAfterPaint(() => {
         </button>
       </div>
 
-      <div class="flex items-center gap-0.5 rounded-xl bg-slate-50 p-0.5" role="group" aria-label="Company filter">
+      <div
+        v-if="!hideCompanyFilter && companyFilter !== undefined"
+        class="flex items-center gap-0.5 rounded-lg bg-slate-50 p-0.5"
+        role="group"
+        aria-label="Company filter"
+      >
         <button
           v-for="option in companyOptions"
           :key="option.value"
           type="button"
-          class="cursor-pointer rounded-lg px-2.5 py-1 text-xs font-medium transition-all duration-200"
+          class="cursor-pointer rounded-md px-2 py-0.5 text-[11px] font-medium transition-all duration-200 sm:text-xs"
           :class="companyFilter === option.value ? 'chip-lime' : 'bg-transparent text-slate-500 hover:text-kalbe-green-deep'"
           :aria-pressed="companyFilter === option.value"
           :title="option.label"
@@ -100,35 +111,35 @@ runAfterPaint(() => {
         </button>
       </div>
 
-      <div class="ml-auto flex items-center gap-1.5">
+      <div class="ml-auto flex items-center gap-1">
         <div class="relative">
-          <Search class="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+          <Search class="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <input
             id="employee-search"
             v-model="localSearch"
             type="search"
             placeholder="Search…"
-            class="w-28 rounded-xl border-0 bg-slate-50 py-1.5 pl-8 pr-7 text-xs text-slate-700 placeholder:text-slate-400 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:w-40 lg:w-48"
+            class="w-24 rounded-lg border-0 bg-slate-50 py-1 pl-7 pr-6 text-[11px] text-slate-700 placeholder:text-slate-400 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:w-36 sm:text-xs lg:w-44"
             autocomplete="off"
             aria-label="Search employee"
           >
           <button
             v-if="localSearch"
             type="button"
-            class="absolute right-1.5 top-1/2 flex h-4 w-4 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-slate-400 hover:text-slate-600"
+            class="absolute right-1 top-1/2 flex h-3.5 w-3.5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-slate-400 hover:text-slate-600"
             aria-label="Clear search"
             @click="clearSearch"
           >
-            <X class="h-3 w-3" />
+            <X class="h-2.5 w-2.5" />
           </button>
         </div>
 
         <div class="relative">
-          <SlidersHorizontal class="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+          <SlidersHorizontal class="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <select
             id="sort-by"
             v-model="sortBy"
-            class="cursor-pointer appearance-none rounded-xl border-0 bg-slate-50 py-1.5 pl-8 pr-6 text-xs font-medium text-slate-700 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20"
+            class="cursor-pointer appearance-none rounded-lg border-0 bg-slate-50 py-1 pl-7 pr-5 text-[11px] font-medium text-slate-700 transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-kalbe-green/20 sm:text-xs"
             aria-label="Sort by"
           >
             <option

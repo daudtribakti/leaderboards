@@ -19,7 +19,7 @@ watch(() => props.percent, syncWidth)
 
 <template>
   <div
-    class="h-1 w-full overflow-hidden rounded-full bg-slate-100"
+    class="h-0.5 w-full overflow-hidden rounded-full bg-slate-100 sm:h-1"
     role="progressbar"
     :aria-valuenow="Math.round(percent)"
     aria-valuemin="0"

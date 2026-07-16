@@ -13,7 +13,7 @@ const toneMap: Record<string, string> = {
 
 <template>
   <span
-    class="inline-flex items-center rounded-md px-1.5 py-0.5 text-2xs font-medium"
+    class="inline-flex items-center rounded px-1 py-px text-[9px] font-medium sm:rounded-md sm:px-1.5 sm:py-0.5 sm:text-2xs"
     :class="toneMap[category] ?? 'bg-slate-50 text-slate-600'"
   >
     {{ category }}

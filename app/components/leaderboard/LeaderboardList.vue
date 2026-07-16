@@ -67,29 +67,29 @@ watch(paginatedEntries, () => {
   <section
     ref="rootRef"
     aria-labelledby="list-heading"
-    class="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
+    class="mx-auto w-full max-w-7xl px-3 pb-10 sm:px-5 lg:px-6"
   >
-    <div data-list-header class="section-divider mb-3">
+    <div data-list-header class="section-divider mb-2">
       <h2
         id="list-heading"
-        class="shrink-0 text-xs font-semibold uppercase tracking-widest text-kalbe-green"
+        class="shrink-0 text-[10px] font-semibold uppercase tracking-widest text-kalbe-green sm:text-2xs"
       >
         Top Ranking
       </h2>
     </div>
 
-    <div data-list-header class="mb-3 flex items-center justify-between gap-2">
-      <p class="text-xs text-slate-400">
+    <div data-list-header class="mb-2 flex items-center justify-between gap-2">
+      <p class="text-[10px] text-slate-400 sm:text-xs">
         Ranked by current calories
       </p>
-      <span class="rounded-full bg-kalbe-mint px-2.5 py-0.5 text-2xs font-semibold text-kalbe-green-deep">
+      <span class="rounded-full bg-kalbe-mint px-2 py-0.5 text-[9px] font-semibold text-kalbe-green-deep sm:text-2xs">
         {{ entries.length }} competitors
       </span>
     </div>
 
     <div
       ref="listRef"
-      class="flex flex-col gap-2"
+      class="flex flex-col gap-1.5"
     >
       <LeaderboardRow
         v-for="entry in paginatedEntries"

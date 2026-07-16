@@ -56,13 +56,13 @@ onUnmounted(() => {
     ref="rootRef"
     data-podium-root
     aria-labelledby="podium-heading"
-    class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
+    class="mx-auto w-full max-w-7xl px-3 sm:px-5 lg:px-6"
   >
-    <div data-podium-heading class="mb-4 text-center sm:mb-5">
-      <h2 id="podium-heading" class="text-base font-bold text-kalbe-green-dark sm:text-lg">
+    <div data-podium-heading class="mb-2 text-center sm:mb-2.5">
+      <h2 id="podium-heading" class="text-sm font-bold text-kalbe-green-dark sm:text-base">
         Top Performers
       </h2>
-      <p class="mt-0.5 text-xs text-slate-400">
+      <p class="mt-0.5 text-[10px] text-slate-400 sm:text-2xs">
         Burn for Good champions
       </p>
     </div>
@@ -70,13 +70,13 @@ onUnmounted(() => {
     <div
       v-if="entries.length > 0"
       data-podium-arena
-      class="podium-arena px-3 pb-4 pt-6 sm:px-6 sm:pb-6 sm:pt-8"
+      class="podium-arena px-2 pb-2.5 pt-3 sm:px-4 sm:pb-3.5 sm:pt-4"
     >
-      <div class="relative flex items-end justify-center gap-2 px-0.5 sm:gap-4 lg:gap-6">
+      <div class="relative flex items-end justify-center gap-1.5 px-0.5 sm:gap-3 lg:gap-4">
         <div
           v-if="second"
           data-podium-card
-          class="min-w-0 flex-1 basis-0 sm:max-w-[220px]"
+          class="min-w-0 flex-1 basis-0 sm:max-w-[180px]"
         >
           <LeaderboardPodiumCard :entry="second" :place="2" :score-delay="0.55" />
         </div>
@@ -85,7 +85,7 @@ onUnmounted(() => {
           v-if="first"
           data-podium-card
           data-podium-champion
-          class="min-w-0 flex-[1.15] basis-0 sm:max-w-[260px]"
+          class="min-w-0 flex-[1.12] basis-0 sm:max-w-[200px]"
         >
           <LeaderboardPodiumCard :entry="first" :place="1" :score-delay="0.7" />
         </div>
@@ -93,7 +93,7 @@ onUnmounted(() => {
         <div
           v-if="third"
           data-podium-card
-          class="min-w-0 flex-1 basis-0 sm:max-w-[220px]"
+          class="min-w-0 flex-1 basis-0 sm:max-w-[180px]"
         >
           <LeaderboardPodiumCard :entry="third" :place="3" :score-delay="0.85" />
         </div>

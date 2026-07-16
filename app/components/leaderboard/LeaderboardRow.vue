@@ -26,11 +26,11 @@ const gapLabel = computed(() => {
 <template>
   <article
     data-list-row
-    class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 shadow-soft transition-all duration-200 hover:border-kalbe-green/20 hover:shadow-card sm:px-4 sm:py-3"
+    class="group flex items-center gap-2 rounded-xl border border-slate-100 bg-white px-2.5 py-1.5 shadow-soft transition-all duration-200 hover:border-kalbe-green/20 hover:shadow-card sm:gap-2.5 sm:px-3 sm:py-2"
     :aria-label="`Rank ${entry.rank}, ${entry.employeeName}, ${entry.currentPoints} calories`"
   >
     <div
-      class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white sm:h-10 sm:w-10"
+      class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white sm:h-8 sm:w-8 sm:text-xs"
       :style="{ background: avatarBg }"
       aria-hidden="true"
     >
@@ -38,42 +38,42 @@ const gapLabel = computed(() => {
     </div>
 
     <div class="min-w-0 flex-1">
-      <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-        <p class="truncate text-sm font-semibold text-slate-800">
+      <div class="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
+        <p class="truncate text-xs font-semibold text-slate-800 sm:text-sm">
           {{ entry.employeeName }}
         </p>
-        <p class="truncate text-2xs text-slate-400">
+        <p class="truncate text-[9px] text-slate-400 sm:text-2xs">
           {{ companyShort }} · {{ entry.category }}
         </p>
       </div>
 
-      <div class="mt-1 flex items-center gap-3">
-        <p class="score-text inline-flex items-center gap-1 text-sm">
-          <TrendingUp class="h-3.5 w-3.5 text-kalbe-lime" aria-hidden="true" />
+      <div class="mt-0.5 flex items-center gap-2 sm:gap-2.5">
+        <p class="score-text inline-flex items-center gap-0.5 text-xs sm:text-sm">
+          <TrendingUp class="h-3 w-3 text-kalbe-lime" aria-hidden="true" />
           {{ formatCalories(entry.currentPoints) }}
         </p>
-        <p class="hidden text-2xs text-slate-400 sm:inline">
+        <p class="hidden text-[10px] text-slate-400 sm:inline">
           Total {{ formatCalories(entry.totalPoints) }}
         </p>
         <span
           v-if="gapLabel"
-          class="hidden items-center gap-0.5 text-2xs text-slate-400 md:inline-flex"
+          class="hidden items-center gap-0.5 text-[10px] text-slate-400 md:inline-flex"
         >
-          <TrendingDown class="h-3 w-3" aria-hidden="true" />
+          <TrendingDown class="h-2.5 w-2.5" aria-hidden="true" />
           {{ gapLabel }}
         </span>
       </div>
 
-      <div class="mt-2 hidden sm:block">
+      <div class="mt-1 hidden sm:block">
         <LeaderboardProgressBar :percent="entry.percentOfLeader" />
       </div>
     </div>
 
     <div class="hidden shrink-0 text-right md:block">
-      <p class="text-2xs font-medium text-slate-400">
+      <p class="text-[9px] font-medium text-slate-400">
         of leader
       </p>
-      <p class="stat-value text-sm text-kalbe-green">
+      <p class="stat-value text-xs text-kalbe-green">
         {{ Math.round(entry.percentOfLeader) }}%
       </p>
     </div>

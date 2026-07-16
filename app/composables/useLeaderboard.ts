@@ -1,4 +1,7 @@
-import { REFRESH_INTERVAL_MS } from '~/constants/leaderboard'
+import {
+  REFRESH_INTERVAL_MS,
+  type CompanySlug,
+} from '~/constants/leaderboard'
 import type {
   CompanyFilter,
   GenderFilter,
@@ -6,6 +9,10 @@ import type {
   LeaderboardLoadStage,
   SortBy,
 } from '~/types/leaderboard'
+import {
+  companyShortLabel,
+  resolveCompanyFromSlug,
+} from '~/utils/companies'
 import {
   applyCompanyFilter,
   applyGenderFilter,
@@ -44,11 +51,19 @@ async function runInitialProgressRamp(
   setProgress(30)
 }
 
-export function useLeaderboard() {
-  const genderFilter = useState<GenderFilter>('lb-gender', () => 'all')
-  const companyFilter = useState<CompanyFilter>('lb-company', () => 'PT Agroveta Husada Dharma')
-  const searchQuery = useState<string>('lb-search', () => '')
-  const sortBy = useState<SortBy>('lb-sort', () => 'points')
+export interface UseLeaderboardOptions {
+  companySlug: CompanySlug
+}
+
+export function useLeaderboard(options: UseLeaderboardOptions) {
+  const { companySlug } = options
+  const lockedCompany = resolveCompanyFromSlug(companySlug)
+  const companyLabel = companyShortLabel(companySlug)
+
+  const genderFilter = useState<GenderFilter>(`lb-gender-${companySlug}`, () => 'all')
+  const companyFilter = computed<CompanyFilter>(() => lockedCompany)
+  const searchQuery = useState<string>(`lb-search-${companySlug}`, () => '')
+  const sortBy = useState<SortBy>(`lb-sort-${companySlug}`, () => 'points')
   const lastUpdatedAt = useState<Date | null>('lb-updated', () => null)
   const loadProgress = ref(0)
   const loadStage = ref<LeaderboardLoadStage>('idle')
@@ -180,6 +195,10 @@ export function useLeaderboard() {
   })
 
   return {
+    companySlug,
+    companyLabel,
+    companyFullName: lockedCompany,
+    isCompanyLocked: true as const,
     genderFilter,
     companyFilter,
     searchQuery,

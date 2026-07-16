@@ -18,17 +18,17 @@ const theme = computed(() => {
     return {
       block: 'podium-block--gold',
       ring: 'podium-avatar-ring--gold',
-      avatar: 'h-14 w-14 text-base sm:h-20 sm:w-20 sm:text-xl',
+      avatar: 'h-10 w-10 text-xs sm:h-14 sm:w-14 sm:text-base',
       medal: 'bg-gradient-to-br from-amber-400 to-amber-600 text-white',
       label: '1st',
-      lift: 'sm:-translate-y-2',
+      lift: 'sm:-translate-y-1',
     }
   }
   if (props.place === 2) {
     return {
       block: 'podium-block--silver',
       ring: 'podium-avatar-ring--silver',
-      avatar: 'h-12 w-12 text-sm sm:h-16 sm:w-16 sm:text-lg',
+      avatar: 'h-9 w-9 text-2xs sm:h-12 sm:w-12 sm:text-sm',
       medal: 'bg-gradient-to-br from-slate-300 to-slate-500 text-white',
       label: '2nd',
       lift: '',
@@ -37,7 +37,7 @@ const theme = computed(() => {
   return {
     block: 'podium-block--bronze',
     ring: 'podium-avatar-ring--bronze',
-    avatar: 'h-12 w-12 text-sm sm:h-16 sm:w-16 sm:text-lg',
+    avatar: 'h-9 w-9 text-2xs sm:h-12 sm:w-12 sm:text-sm',
     medal: 'bg-gradient-to-br from-orange-400 to-orange-600 text-white',
     label: '3rd',
     lift: '',
@@ -51,22 +51,20 @@ const theme = computed(() => {
     :class="theme.lift"
     :aria-label="`Rank ${entry.rank}, ${entry.employeeName}, ${entry.currentPoints} calories`"
   >
-    <!-- Rank badge -->
-    <div data-podium-medal class="mb-2 flex justify-center">
+    <div data-podium-medal class="mb-1 flex justify-center sm:mb-1.5">
       <div
-        class="inline-flex h-6 items-center gap-1 rounded-full px-2 text-2xs font-bold shadow-sm sm:h-7 sm:px-2.5 sm:text-xs"
+        class="inline-flex h-5 items-center gap-0.5 rounded-full px-1.5 text-[9px] font-bold shadow-sm sm:h-6 sm:px-2 sm:text-2xs"
         :class="theme.medal"
       >
-        <Crown v-if="place === 1" class="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-        <Medal v-else class="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+        <Crown v-if="place === 1" class="h-2.5 w-2.5 shrink-0 sm:h-3 sm:w-3" aria-hidden="true" />
+        <Medal v-else class="h-2.5 w-2.5 shrink-0 sm:h-3 sm:w-3" aria-hidden="true" />
         {{ theme.label }}
       </div>
     </div>
 
-    <!-- Avatar -->
     <div
       data-podium-avatar
-      class="mx-auto mb-2.5 flex shrink-0 items-center justify-center rounded-full font-bold text-white sm:mb-3"
+      class="mx-auto mb-1.5 flex shrink-0 items-center justify-center rounded-full font-bold text-white sm:mb-2"
       :class="[theme.avatar, theme.ring]"
       :style="{ background: avatarBg }"
       aria-hidden="true"
@@ -74,38 +72,36 @@ const theme = computed(() => {
       {{ initials }}
     </div>
 
-    <!-- Info card -->
     <div
       data-podium-info
-      class="mb-2 w-full rounded-xl border border-slate-100 bg-white px-2 py-1.5 shadow-md sm:mb-2.5 sm:px-3 sm:py-2.5"
+      class="mb-1.5 w-full rounded-lg border border-slate-100 bg-white px-1.5 py-1 shadow-sm sm:mb-2 sm:px-2 sm:py-1.5"
     >
-      <p class="line-clamp-2 text-[10px] font-bold leading-snug text-slate-800 sm:text-xs">
+      <p class="line-clamp-2 text-[9px] font-bold leading-tight text-slate-800 sm:text-[10px]">
         {{ entry.employeeName }}
       </p>
       <p
         data-podium-score
-        class="score-text mt-1 flex items-center justify-center gap-0.5 text-xs sm:gap-1 sm:text-base"
+        class="score-text mt-0.5 flex items-center justify-center gap-0.5 text-[11px] sm:text-sm"
       >
-        <TrendingUp class="h-3 w-3 shrink-0 text-kalbe-lime sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+        <TrendingUp class="h-2.5 w-2.5 shrink-0 text-kalbe-lime sm:h-3 sm:w-3" aria-hidden="true" />
         <LeaderboardAnimatedCounter
           :value="entry.currentPoints"
           :start-delay="scoreStartDelay"
           :duration="0.9"
         />
       </p>
-      <p class="mt-0.5 hidden text-2xs text-slate-400 sm:block">
+      <p class="mt-0.5 hidden text-[9px] text-slate-400 sm:block">
         Total {{ formatCalories(entry.totalPoints) }}
       </p>
-      <div class="mt-1 flex flex-wrap items-center justify-center gap-0.5 sm:mt-1.5 sm:gap-1">
+      <div class="mt-0.5 flex flex-wrap items-center justify-center gap-0.5 sm:mt-1">
         <LeaderboardCompanyBadge :company="entry.company" compact />
         <LeaderboardCategoryBadge :category="entry.category" />
       </div>
     </div>
 
-    <!-- Podium pedestal -->
     <div
       data-podium-block-wrap
-      class="w-full overflow-hidden rounded-b-xl"
+      class="w-full overflow-hidden rounded-b-lg"
     >
       <div
         data-podium-block
@@ -113,7 +109,7 @@ const theme = computed(() => {
         :class="theme.block"
         aria-hidden="true"
       >
-        <span class="font-display text-xl font-extrabold text-white/40 sm:text-3xl">
+        <span class="font-display text-base font-extrabold text-white/40 sm:text-xl">
           {{ place }}
         </span>
       </div>

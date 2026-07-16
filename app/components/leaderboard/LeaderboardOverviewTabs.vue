@@ -25,12 +25,12 @@ function animateActivePanel(tab: OverviewTab) {
   nextTick(() => {
     const panel = tab === 'stats' ? statsPanelRef.value : hotPanelRef.value
     if (!panel) return
-    fadeSlideUp(panel, { y: 10, duration: 0.35 })
+    fadeSlideUp(panel, { y: 8, duration: 0.3 })
     staggerIn(panel, '[data-stat-card], [data-ticker-card]', {
-      y: 14,
-      stagger: 0.04,
-      duration: 0.45,
-      delay: 0.1,
+      y: 10,
+      stagger: 0.03,
+      duration: 0.35,
+      delay: 0.06,
     })
   })
 }
@@ -42,9 +42,9 @@ watch(activeTab, (tab) => {
 runAfterPaint(() => {
   if (rootRef.value) {
     scaleIn(rootRef.value.querySelector('[data-overview-card]'), {
-      delay: 0.25,
-      scale: 0.96,
-      duration: 0.6,
+      delay: 0.2,
+      scale: 0.97,
+      duration: 0.45,
     })
   }
   animateActivePanel('stats')
@@ -55,11 +55,11 @@ runAfterPaint(() => {
   <section
     ref="rootRef"
     aria-label="Challenge overview"
-    class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
+    class="mx-auto w-full max-w-7xl px-3 sm:px-5 lg:px-6"
   >
     <div
       data-overview-card
-      class="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-soft"
+      class="overflow-hidden rounded-xl border border-slate-100 bg-white shadow-soft"
     >
       <div
         class="flex border-b border-slate-100"
@@ -71,19 +71,19 @@ runAfterPaint(() => {
           :key="tab.id"
           type="button"
           role="tab"
-          class="flex flex-1 cursor-pointer items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-all duration-200 sm:text-sm"
+          class="flex flex-1 cursor-pointer items-center justify-center gap-1 px-2 py-1.5 text-2xs font-semibold transition-all duration-200 sm:gap-1.5 sm:text-xs"
           :class="activeTab === tab.id
             ? 'border-b-2 border-kalbe-green bg-kalbe-mint/40 text-kalbe-green-deep'
             : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'"
           :aria-selected="activeTab === tab.id"
           @click="activeTab = tab.id"
         >
-          <component :is="tab.icon" class="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+          <component :is="tab.icon" class="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
           {{ tab.label }}
         </button>
       </div>
 
-      <div class="p-3 sm:p-4">
+      <div class="p-2 sm:p-2.5">
         <div
           v-show="activeTab === 'stats'"
           ref="statsPanelRef"

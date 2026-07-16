@@ -18,7 +18,7 @@ const label = computed(() => {
 
 const sizeClass = computed(() => {
   if (props.size === 'lg') return 'h-10 w-10 text-sm'
-  if (props.size === 'sm') return 'h-7 w-7 text-2xs'
+  if (props.size === 'sm') return 'h-6 w-6 text-[10px]'
   return 'h-8 w-8 text-xs'
 })
 

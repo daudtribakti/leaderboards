@@ -70,7 +70,7 @@
   }
 
   .podium-arena {
-    @apply relative overflow-hidden rounded-3xl border border-emerald-100/80;
+    @apply relative overflow-hidden rounded-2xl border border-emerald-100/80;
     background: linear-gradient(
       165deg,
       #F0FDF4 0%,
@@ -108,35 +108,35 @@
 
   .podium-block--gold {
     background: linear-gradient(180deg, #FEF9C3 0%, #FDE047 30%, #CA8A04 100%);
-    min-height: 4.5rem;
+    min-height: 2.5rem;
   }
 
   .podium-block--silver {
     background: linear-gradient(180deg, #F8FAFC 0%, #CBD5E1 40%, #64748B 100%);
-    min-height: 3.25rem;
+    min-height: 1.85rem;
   }
 
   .podium-block--bronze {
     background: linear-gradient(180deg, #FFEDD5 0%, #FDBA74 40%, #B45309 100%);
-    min-height: 2.75rem;
+    min-height: 1.5rem;
   }
 
   @media (min-width: 640px) {
-    .podium-block--gold { min-height: 7rem; }
-    .podium-block--silver { min-height: 5.5rem; }
-    .podium-block--bronze { min-height: 4.25rem; }
+    .podium-block--gold { min-height: 3.75rem; }
+    .podium-block--silver { min-height: 2.85rem; }
+    .podium-block--bronze { min-height: 2.25rem; }
   }
 
   .podium-avatar-ring--gold {
-    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #FDE047, 0 8px 24px rgba(202, 138, 4, 0.35);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #FDE047, 0 4px 12px rgba(202, 138, 4, 0.3);
   }
 
   .podium-avatar-ring--silver {
-    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #CBD5E1, 0 6px 16px rgba(100, 116, 139, 0.25);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #CBD5E1, 0 3px 10px rgba(100, 116, 139, 0.22);
   }
 
   .podium-avatar-ring--bronze {
-    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #FDBA74, 0 6px 16px rgba(180, 83, 9, 0.25);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #FDBA74, 0 3px 10px rgba(180, 83, 9, 0.22);
   }
 
   .podium-card {
