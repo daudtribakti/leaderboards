@@ -28,7 +28,7 @@ function fireConfetti() {
     ...defaults,
     particleCount: 80,
     spread: 70,
-    colors: ['#E4002B', '#F5C542', '#3B82F6', '#F97316', '#ffffff'],
+    colors: ['#E4002B', '#F5C542', '#a855f7', '#22d3ee', '#ffffff'],
   })
 
   setTimeout(() => {
@@ -46,7 +46,7 @@ function fireConfetti() {
       angle: 120,
       spread: 55,
       origin: { x: 1, y: 0.45 },
-      colors: ['#3B82F6', '#F97316'],
+      colors: ['#a855f7', '#22d3ee'],
     })
   }, 250)
 }
@@ -76,24 +76,27 @@ watch(
     aria-labelledby="podium-heading"
     class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
   >
-    <div class="mb-8 text-center">
-      <h2 id="podium-heading" class="font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+    <div class="mb-5 text-center sm:mb-8">
+      <h2
+        id="podium-heading"
+        class="font-display text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl"
+      >
         Top Performers
       </h2>
-      <p class="mt-2 text-sm text-white/50">
+      <p class="mt-1 text-xs text-white/45 sm:text-sm">
         The podium of Kalbe Donor Kalori champions
       </p>
     </div>
 
     <div
       v-if="entries.length > 0"
-      class="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end md:gap-6"
+      class="flex items-end justify-center gap-2 sm:gap-6 lg:gap-10"
     >
-      <!-- Mobile order: 1, 2, 3 · Desktop: 2, 1, 3 -->
+      <!-- Order: 2 | 1 | 3 -->
       <div
         v-if="second"
         data-podium-card
-        class="order-2 w-full max-w-sm md:order-1 md:w-1/3"
+        class="w-[30%] max-w-[200px] sm:max-w-[240px] lg:max-w-[280px]"
       >
         <LeaderboardPodiumCard :entry="second" :place="2" />
       </div>
@@ -101,7 +104,7 @@ watch(
       <div
         v-if="first"
         data-podium-card
-        class="order-1 w-full max-w-sm md:order-2 md:w-[36%]"
+        class="w-[38%] max-w-[240px] sm:max-w-[280px] lg:max-w-[320px]"
       >
         <LeaderboardPodiumCard :entry="first" :place="1" />
       </div>
@@ -109,7 +112,7 @@ watch(
       <div
         v-if="third"
         data-podium-card
-        class="order-3 w-full max-w-sm md:w-1/3"
+        class="w-[30%] max-w-[200px] sm:max-w-[240px] lg:max-w-[280px]"
       >
         <LeaderboardPodiumCard :entry="third" :place="3" />
       </div>

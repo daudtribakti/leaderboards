@@ -12,23 +12,40 @@ defineProps<{
     aria-labelledby="list-heading"
     class="mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6 lg:px-8"
   >
-    <div class="mb-6 flex items-end justify-between gap-4">
-      <div>
-        <h2 id="list-heading" class="font-display text-xl font-bold tracking-tight text-white sm:text-2xl">
-          Full Standings
-        </h2>
-        <p class="mt-1 text-sm text-white/45">
-          Ranked by current calories · {{ entries.length }} competitors
-        </p>
-      </div>
+    <div class="section-divider mb-4 sm:mb-6">
+      <h2
+        id="list-heading"
+        class="shrink-0 font-display text-sm font-bold tracking-wide text-[var(--gold)] sm:text-base lg:text-lg"
+      >
+        Top Ranking
+      </h2>
+    </div>
+
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+      <p class="text-xs text-white/45 sm:text-sm">
+        Full standings ranked by current calories
+      </p>
+      <p class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/60">
+        {{ entries.length }} competitors
+      </p>
+    </div>
+
+    <!-- Desktop column hints -->
+    <div
+      class="mb-2 hidden grid-cols-[1fr_auto_auto] gap-4 px-5 text-[10px] font-semibold uppercase tracking-wider text-white/30 lg:grid"
+      aria-hidden="true"
+    >
+      <span>Competitor</span>
+      <span class="w-[140px] text-right">Calories</span>
+      <span class="w-10 text-center">Rank</span>
     </div>
 
     <TransitionGroup
       name="lb-list"
       tag="div"
-      class="relative flex flex-col gap-3"
+      class="relative flex flex-col gap-2 sm:gap-3"
     >
-      <LeaderboardCard
+      <LeaderboardRow
         v-for="entry in entries"
         :key="entryKey(entry)"
         :entry="entry"

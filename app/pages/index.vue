@@ -15,7 +15,6 @@ const {
   searchQuery,
   sortBy,
   lastUpdatedAt,
-  pending,
   error,
   refresh,
   topThree,
@@ -27,29 +26,38 @@ const {
   hasLoaded,
   isLoading,
 } = useLeaderboard()
+
+const tickerEntries = computed(() => {
+  const ranked = filteredEntries.value.length
+    ? filteredEntries.value
+    : topThree.value
+  return ranked.slice(0, 10)
+})
 </script>
 
 <template>
-  <main class="relative min-h-screen pb-8">
+  <main class="relative min-h-screen overflow-x-hidden pb-16">
     <LeaderboardBackgroundAnimatedBackground />
     <LeaderboardBackgroundFloatingParticles />
 
-    <div class="relative z-10">
-      <LeaderboardHeroSection :last-updated-at="lastUpdatedAt" />
+    <div class="relative z-10 mx-auto min-h-screen w-full max-w-7xl">
+      <LeaderboardHeader :last-updated-at="lastUpdatedAt" />
 
-      <!-- Loading -->
       <LeaderboardLoadingSkeleton v-if="isLoading" />
 
-      <!-- Error -->
-      <div v-else-if="hasError" class="px-4 py-12">
+      <div v-else-if="hasError" class="px-4 py-12 sm:px-6 lg:px-8">
         <LeaderboardErrorState
           :message="error?.message || 'Failed to fetch live leaderboard data.'"
           @retry="refresh()"
         />
       </div>
 
-      <!-- Loaded -->
-      <div v-else-if="hasLoaded" class="space-y-10">
+      <div v-else-if="hasLoaded" class="space-y-6 pt-2 sm:space-y-8 sm:pt-4">
+        <LeaderboardTicker
+          v-if="tickerEntries.length"
+          :entries="tickerEntries"
+        />
+
         <LeaderboardStats :stats="stats" />
 
         <LeaderboardFilter
@@ -59,12 +67,19 @@ const {
           v-model:sort="sortBy"
         />
 
-        <div v-if="isEmpty" class="px-4 py-8">
+        <div v-if="isEmpty" class="px-4 py-8 sm:px-6 lg:px-8">
           <LeaderboardEmptyState />
         </div>
 
         <template v-else>
           <LeaderboardPodium v-if="topThree.length" :entries="topThree" />
+
+          <div
+            v-if="topThree.length && restEntries.length"
+            class="mx-auto h-px w-[80%] max-w-3xl bg-gradient-to-r from-transparent via-[var(--neon-lime)]/60 to-transparent shadow-[0_0_16px_rgba(163,230,53,0.45)]"
+            aria-hidden="true"
+          />
+
           <LeaderboardList
             v-if="restEntries.length"
             :entries="restEntries"

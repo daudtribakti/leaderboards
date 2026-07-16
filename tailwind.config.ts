@@ -22,8 +22,17 @@ export default {
           blue: '#3B82F6',
           orange: '#F97316',
         },
+        neon: {
+          cyan: '#22d3ee',
+          lime: '#a3e635',
+          purple: '#a855f7',
+        },
+        purple: {
+          deep: '#0f0f1b',
+          mid: '#1a1a2e',
+        },
         surface: {
-          deep: '#070A12',
+          deep: '#0f0f1b',
           glass: 'rgba(255, 255, 255, 0.06)',
         },
       },
@@ -35,6 +44,9 @@ export default {
         glass: '0 8px 32px rgba(0, 0, 0, 0.4)',
         glow: '0 0 40px rgba(228, 0, 43, 0.25)',
         gold: '0 0 48px rgba(245, 197, 66, 0.35)',
+        'neon-purple': '0 0 32px rgba(168, 85, 247, 0.35)',
+        'neon-red': '0 0 32px rgba(228, 0, 43, 0.4)',
+        'neon-lime': '0 0 20px rgba(163, 230, 53, 0.3)',
       },
       animation: {
         shimmer: 'shimmer 1.8s ease-in-out infinite',

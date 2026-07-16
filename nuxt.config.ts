@@ -23,7 +23,7 @@ export default defineNuxtConfig({
           name: 'description',
           content: 'Track the best performers from PT Agroveta Husada Dharma and Corporate Function.',
         },
-        { name: 'theme-color', content: '#070A12' },
+        { name: 'theme-color', content: '#0f0f1b' },
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
