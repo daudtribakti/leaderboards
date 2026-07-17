@@ -16,6 +16,7 @@ import {
 import {
   applyCompanyFilter,
   applyGenderFilter,
+  applyNameAllowlist,
   computeStats,
   enrichEntries,
   filterByAllowedCompanies,
@@ -53,17 +54,21 @@ async function runInitialProgressRamp(
 
 export interface UseLeaderboardOptions {
   companySlug: CompanySlug
+  nameAllowlist?: readonly string[]
+  companyLabelOverride?: string
+  stateKey?: string
 }
 
 export function useLeaderboard(options: UseLeaderboardOptions) {
-  const { companySlug } = options
+  const { companySlug, nameAllowlist, companyLabelOverride, stateKey } = options
   const lockedCompany = resolveCompanyFromSlug(companySlug)
-  const companyLabel = companyShortLabel(companySlug)
+  const companyLabel = companyLabelOverride ?? companyShortLabel(companySlug)
+  const filterStateKey = stateKey ?? companySlug
 
-  const genderFilter = useState<GenderFilter>(`lb-gender-${companySlug}`, () => 'all')
+  const genderFilter = useState<GenderFilter>(`lb-gender-${filterStateKey}`, () => 'all')
   const companyFilter = computed<CompanyFilter>(() => lockedCompany)
-  const searchQuery = useState<string>(`lb-search-${companySlug}`, () => '')
-  const sortBy = useState<SortBy>(`lb-sort-${companySlug}`, () => 'points')
+  const searchQuery = useState<string>(`lb-search-${filterStateKey}`, () => '')
+  const sortBy = useState<SortBy>(`lb-sort-${filterStateKey}`, () => 'points')
   const lastUpdatedAt = useState<Date | null>('lb-updated', () => null)
   const loadProgress = ref(0)
   const loadStage = ref<LeaderboardLoadStage>('idle')
@@ -154,14 +159,17 @@ export function useLeaderboard(options: UseLeaderboardOptions) {
   const filteredBeforeSearch = computed(() => {
     let result = [...baseEntries.value]
     result = applyCompanyFilter(result, companyFilter.value)
+    result = applyNameAllowlist(result, nameAllowlist)
     result = applyGenderFilter(result, genderFilter.value)
     return recalculateRanks(result)
   })
 
   // Company-only scope (ignore gender tab) so Male/Female metrics stay per-company
-  const companyScopedEntries = computed(() =>
-    applyCompanyFilter(baseEntries.value, companyFilter.value),
-  )
+  const companyScopedEntries = computed(() => {
+    let result = applyCompanyFilter(baseEntries.value, companyFilter.value)
+    result = applyNameAllowlist(result, nameAllowlist)
+    return result
+  })
 
   const filteredEntries = computed(() => {
     return processLeaderboard(baseEntries.value, {
@@ -169,6 +177,7 @@ export function useLeaderboard(options: UseLeaderboardOptions) {
       company: companyFilter.value,
       search: searchQuery.value,
       sortBy: sortBy.value,
+      nameAllowlist,
     })
   })
 

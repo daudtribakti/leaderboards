@@ -3,6 +3,9 @@ import type { CompanySlug } from '~/constants/leaderboard'
 
 const props = defineProps<{
   companySlug: CompanySlug
+  nameAllowlist?: readonly string[]
+  companyLabelOverride?: string
+  stateKey?: string
 }>()
 
 const {
@@ -22,7 +25,12 @@ const {
   hasLoaded,
   loadProgress,
   loadStage,
-} = useLeaderboard({ companySlug: props.companySlug })
+} = useLeaderboard({
+  companySlug: props.companySlug,
+  nameAllowlist: props.nameAllowlist,
+  companyLabelOverride: props.companyLabelOverride,
+  stateKey: props.stateKey,
+})
 
 const showSplash = ref(true)
 

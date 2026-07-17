@@ -1,34 +1,44 @@
 <script setup lang="ts">
-import { Building2, ChevronRight, Flame, Leaf } from 'lucide-vue-next'
+import { Building2, ChevronRight, Flame, Leaf, Monitor } from 'lucide-vue-next'
 import {
   COMPANY_ROUTES,
   COMPANY_SHORT_LABELS,
-  type CompanySlug,
 } from '~/constants/leaderboard'
 
 const companies: {
-  slug: CompanySlug
+  to: string
   shortLabel: string
   fullName: string
   description: string
+  icon: 'building' | 'monitor'
 }[] = [
   {
-    slug: 'agroveta',
+    to: '/agroveta',
     shortLabel: COMPANY_SHORT_LABELS[COMPANY_ROUTES.agroveta],
     fullName: COMPANY_ROUTES.agroveta,
     description: 'Leaderboard Donor Kalori untuk karyawan PT Agroveta Husada Dharma.',
+    icon: 'building',
   },
   {
-    slug: 'corporate',
+    to: '/corporate',
     shortLabel: COMPANY_SHORT_LABELS[COMPANY_ROUTES.corporate],
     fullName: COMPANY_ROUTES.corporate,
     description: 'Leaderboard Donor Kalori untuk karyawan Corporate Function.',
+    icon: 'building',
   },
   {
-    slug: 'gcm',
+    to: '/corp-it',
+    shortLabel: 'Corporate IT',
+    fullName: 'Corporate Function — IT',
+    description: 'Leaderboard Donor Kalori untuk tim Corporate IT.',
+    icon: 'monitor',
+  },
+  {
+    to: '/gcm',
     shortLabel: COMPANY_SHORT_LABELS[COMPANY_ROUTES.gcm],
     fullName: COMPANY_ROUTES.gcm,
     description: 'Leaderboard Donor Kalori untuk karyawan PT Global Chemindo Megatrading.',
+    icon: 'building',
   },
 ]
 
@@ -77,11 +87,11 @@ runAfterPaint(() => {
         </p>
       </div>
 
-      <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+      <div class="grid gap-4 sm:grid-cols-2 sm:gap-5">
         <NuxtLink
           v-for="company in companies"
-          :key="company.slug"
-          :to="`/${company.slug}`"
+          :key="company.to"
+          :to="company.to"
           data-enter-card
           class="group glass-card relative flex flex-col gap-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-float sm:p-6"
         >
@@ -90,7 +100,16 @@ runAfterPaint(() => {
               class="flex h-11 w-11 items-center justify-center rounded-xl bg-kalbe-mint text-kalbe-green ring-1 ring-kalbe-green/10 transition-colors group-hover:bg-gradient-to-br group-hover:from-kalbe-lime group-hover:to-kalbe-green group-hover:text-white group-hover:ring-0"
               aria-hidden="true"
             >
-              <Building2 class="h-5 w-5" stroke-width="2" />
+              <Monitor
+                v-if="company.icon === 'monitor'"
+                class="h-5 w-5"
+                stroke-width="2"
+              />
+              <Building2
+                v-else
+                class="h-5 w-5"
+                stroke-width="2"
+              />
             </div>
             <span
               class="inline-flex items-center gap-1 rounded-full bg-kalbe-mint px-2.5 py-1 text-2xs font-semibold text-kalbe-green-deep ring-1 ring-kalbe-green/10"

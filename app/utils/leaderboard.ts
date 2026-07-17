@@ -44,6 +44,19 @@ export function applyGenderFilter<T extends { gender: Gender }>(
   return entries.filter(entry => entry.gender === gender)
 }
 
+function normalizeEmployeeName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ').toUpperCase()
+}
+
+export function applyNameAllowlist<T extends { employeeName: string }>(
+  entries: T[],
+  names: readonly string[] | undefined,
+): T[] {
+  if (!names?.length) return entries
+  const allowed = new Set(names.map(normalizeEmployeeName))
+  return entries.filter(entry => allowed.has(normalizeEmployeeName(entry.employeeName)))
+}
+
 export function applySearch(
   entries: LeaderboardEntry[],
   query: string,
@@ -108,10 +121,12 @@ export function processLeaderboard(
     company: CompanyFilter
     search: string
     sortBy: SortBy
+    nameAllowlist?: readonly string[]
   },
 ): LeaderboardEntry[] {
   let result = filterByAllowedCompanies(entries)
   result = applyCompanyFilter(result, options.company)
+  result = applyNameAllowlist(result, options.nameAllowlist)
   result = applyGenderFilter(result, options.gender)
 
   const ranked = recalculateRanks(result)
