@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { TrendingDown, TrendingUp } from 'lucide-vue-next'
 import type { LeaderboardEntry } from '~/types/leaderboard'
-import { HEART_RATE_CALORIES_LABEL } from '~/constants/leaderboard'
+import {
+  COMPANY_SHORT_LABELS,
+  HEART_RATE_CALORIES_LABEL,
+  type AllowedCompany,
+} from '~/constants/leaderboard'
 import { avatarColorFromName, formatCalories, getInitials, isDeveloperEmployee } from '~/utils/leaderboard'
 
 const props = defineProps<{
@@ -14,8 +18,9 @@ const initials = computed(() => getInitials(props.entry.employeeName))
 const avatarBg = computed(() => avatarColorFromName(props.entry.employeeName))
 
 const companyShort = computed(() => {
-  if (props.entry.company === 'PT Agroveta Husada Dharma') return 'Agroveta'
-  if (props.entry.company === 'Corporate Function') return 'Corporate'
+  if (props.entry.company in COMPANY_SHORT_LABELS) {
+    return COMPANY_SHORT_LABELS[props.entry.company as AllowedCompany]
+  }
   return props.entry.company
 })
 

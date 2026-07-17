@@ -318,22 +318,184 @@ export function useLeaderboardAnimations() {
     if (!root) return null
 
     const tl = revealPodium(root)
+    if (!tl) return null
+
+    const championSlot = root.querySelector<HTMLElement>('[data-podium-champion]')
+    const championCard = championSlot?.querySelector<HTMLElement>('.podium-card--champion')
+    const championMedal = championSlot?.querySelector<HTMLElement>('[data-podium-medal]')
+    const championAura = championSlot?.querySelector<HTMLElement>('.podium-champion-aura')
+    const championCrown = championSlot?.querySelector<HTMLElement>('[data-podium-crown]')
+    const championRays = championSlot?.querySelector<HTMLElement>('[data-podium-rays]')
+    const championSparkles = championSlot?.querySelectorAll<HTMLElement>('.podium-champion-sparkle')
+    const spotlight = root.querySelector<HTMLElement>('[data-podium-spotlight]')
     const hasFiredConfetti = useState('podium-confetti-fired', () => false)
+
+    if (!prefersReducedMotion.value && spotlight) {
+      tl.fromTo(
+        spotlight,
+        { opacity: 0, scaleY: 0.4 },
+        {
+          opacity: 1,
+          scaleY: 1,
+          duration: duration(0.9),
+          ease: 'power2.out',
+          transformOrigin: 'top center',
+          clearProps: 'opacity,transform',
+        },
+        0.2,
+      )
+    }
 
     if (!prefersReducedMotion.value && !hasFiredConfetti.value) {
       hasFiredConfetti.value = true
-      tl?.call(() => {
+      tl.call(() => {
         confetti({
-          origin: { y: 0.35 },
+          origin: { y: 0.32 },
           zIndex: 40,
-          particleCount: 36,
-          spread: 48,
-          startVelocity: 22,
-          ticks: 120,
+          particleCount: 48,
+          spread: 62,
+          startVelocity: 26,
+          ticks: 140,
           disableForReducedMotion: true,
-          colors: ['#15803D', '#84CC16', '#CA8A04', '#ffffff'],
+          colors: ['#15803D', '#84CC16', '#CA8A04', '#FACC15', '#ffffff'],
         })
-      }, undefined, 0.75)
+      }, undefined, 0.7)
+
+      tl.call(() => {
+        if (!championSlot) return
+        const rect = championSlot.getBoundingClientRect()
+        const x = (rect.left + rect.width / 2) / window.innerWidth
+        const y = (rect.top + rect.height * 0.22) / window.innerHeight
+        confetti({
+          origin: { x, y },
+          zIndex: 40,
+          particleCount: 42,
+          spread: 70,
+          startVelocity: 22,
+          ticks: 130,
+          scalar: 1.05,
+          disableForReducedMotion: true,
+          colors: ['#CA8A04', '#FACC15', '#FDE047', '#FEF08A', '#FEF9C3', '#ffffff'],
+        })
+        confetti({
+          origin: { x, y: Math.min(0.95, y + 0.08) },
+          zIndex: 40,
+          particleCount: 18,
+          spread: 360,
+          startVelocity: 12,
+          ticks: 90,
+          scalar: 0.8,
+          disableForReducedMotion: true,
+          colors: ['#FDE047', '#FACC15', '#ffffff'],
+        })
+      }, undefined, 1.05)
+    }
+
+    if (!prefersReducedMotion.value && championCard) {
+      const liftY = window.matchMedia('(min-width: 640px)').matches ? -16 : -4
+
+      tl.to(
+        championCard,
+        {
+          scale: 1.08,
+          y: liftY,
+          duration: duration(0.4),
+          ease: 'power2.out',
+        },
+        '-=0.2',
+      )
+      tl.to(championCard, {
+        scale: 1,
+        y: liftY,
+        duration: duration(0.5),
+        ease: 'back.out(2)',
+      })
+
+      if (championCrown) {
+        tl.fromTo(
+          championCrown,
+          { opacity: 0, y: 12, scale: 0.4, rotation: -20 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotate: 0,
+            duration: duration(0.55),
+            ease: 'back.out(2.6)',
+            clearProps: 'opacity,transform',
+          },
+          '-=0.55',
+        )
+      }
+
+      if (championMedal) {
+        tl.fromTo(
+          championMedal,
+          { scale: 1 },
+          {
+            scale: 1.2,
+            duration: duration(0.3),
+            yoyo: true,
+            repeat: 1,
+            ease: 'back.out(2.8)',
+          },
+          '<',
+        )
+      }
+
+      if (championAura) {
+        tl.fromTo(
+          championAura,
+          { opacity: 0, scale: 0.45 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: duration(0.65),
+            ease: 'power2.out',
+            clearProps: 'opacity,transform',
+          },
+          '-=0.6',
+        )
+      }
+
+      if (championRays) {
+        tl.fromTo(
+          championRays,
+          { opacity: 0, scale: 0.5 },
+          {
+            opacity: 0.85,
+            scale: 1,
+            duration: duration(0.8),
+            ease: 'power2.out',
+            clearProps: 'opacity,transform',
+          },
+          '-=0.7',
+        )
+      }
+
+      if (championSparkles?.length) {
+        tl.fromTo(
+          championSparkles,
+          { opacity: 0, scale: 0 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: duration(0.4),
+            stagger: 0.08,
+            ease: 'back.out(2)',
+            clearProps: 'opacity,transform',
+          },
+          '-=0.45',
+        )
+      }
+
+      tl.to(championCard, {
+        y: liftY - 6,
+        duration: 2.6,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      })
     }
 
     return tl

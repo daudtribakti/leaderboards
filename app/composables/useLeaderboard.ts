@@ -158,6 +158,11 @@ export function useLeaderboard(options: UseLeaderboardOptions) {
     return recalculateRanks(result)
   })
 
+  // Company-only scope (ignore gender tab) so Male/Female metrics stay per-company
+  const companyScopedEntries = computed(() =>
+    applyCompanyFilter(baseEntries.value, companyFilter.value),
+  )
+
   const filteredEntries = computed(() => {
     return processLeaderboard(baseEntries.value, {
       gender: genderFilter.value,
@@ -180,7 +185,7 @@ export function useLeaderboard(options: UseLeaderboardOptions) {
   })
 
   const stats = computed(() =>
-    computeStats(baseEntries.value, filteredBeforeSearch.value),
+    computeStats(companyScopedEntries.value, filteredBeforeSearch.value),
   )
 
   const isEmpty = computed(

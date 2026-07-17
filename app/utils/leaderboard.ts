@@ -1,4 +1,4 @@
-import { ALLOWED_COMPANIES, DEVELOPER_EMPLOYEE_NAME } from '~/constants/leaderboard'
+import { ALLOWED_COMPANIES, DEVELOPER_EMPLOYEE_NAMES } from '~/constants/leaderboard'
 import type {
   CompanyFilter,
   Gender,
@@ -123,12 +123,12 @@ export function processLeaderboard(
 }
 
 export function computeStats(
-  baseEntries: Array<{ gender: Gender, company: string, currentPoints: number }>,
+  companyScopedEntries: Array<{ gender: Gender, company: string, currentPoints: number }>,
   filteredBeforeSearch: Array<{ company: string, currentPoints: number }>,
 ): LeaderboardStats {
-  const allowed = filterByAllowedCompanies(baseEntries)
-  const maleParticipants = allowed.filter(e => e.gender === 'male').length
-  const femaleParticipants = allowed.filter(e => e.gender === 'female').length
+  // Gender counts follow the active company (not gender tab), so both stay visible and accurate
+  const maleParticipants = companyScopedEntries.filter(e => e.gender === 'male').length
+  const femaleParticipants = companyScopedEntries.filter(e => e.gender === 'female').length
 
   const points = filteredBeforeSearch.map(e => e.currentPoints)
   const totalParticipants = filteredBeforeSearch.length
@@ -168,7 +168,8 @@ export function avatarColorFromName(name: string): string {
 }
 
 export function isDeveloperEmployee(name: string): boolean {
-  return name.trim() === DEVELOPER_EMPLOYEE_NAME
+  const normalized = name.trim()
+  return (DEVELOPER_EMPLOYEE_NAMES as readonly string[]).includes(normalized)
 }
 
 export function formatCalories(value: number): string {

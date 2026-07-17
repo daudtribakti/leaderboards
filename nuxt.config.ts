@@ -21,7 +21,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'description',
-          content: 'Track the best performers from PT Agroveta Husada Dharma and Corporate Function.',
+          content: 'Track the best performers from PT Agroveta Husada Dharma, Corporate Function, and PT Global Chemindo Megatrading.',
         },
         { name: 'theme-color', content: '#15803D' },
       ],

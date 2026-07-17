@@ -79,8 +79,10 @@ onUnmounted(() => {
     <div
       v-if="entries.length > 0"
       data-podium-arena
-      class="podium-arena px-1.5 pb-0 pt-3 sm:px-5 sm:pt-5"
+      class="podium-arena px-1.5 pb-0 pt-4 sm:px-5 sm:pt-7"
     >
+      <div class="podium-spotlight" data-podium-spotlight aria-hidden="true" />
+
       <div class="podium-grid relative px-0.5 sm:px-1">
         <div
           v-if="second"

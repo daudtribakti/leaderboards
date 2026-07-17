@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { COMPANY_SHORT_LABELS, type AllowedCompany } from '~/constants/leaderboard'
+import {
+  ALLOWED_COMPANIES,
+  COMPANY_SHORT_LABELS,
+  type AllowedCompany,
+} from '~/constants/leaderboard'
 
 const props = defineProps<{
   company: string
@@ -7,7 +11,7 @@ const props = defineProps<{
 }>()
 
 const isAllowed = computed(() =>
-  props.company === 'PT Agroveta Husada Dharma' || props.company === 'Corporate Function',
+  (ALLOWED_COMPANIES as readonly string[]).includes(props.company),
 )
 
 const shortLabel = computed(() => {
@@ -21,6 +25,9 @@ const toneClass = computed(() => {
   }
   if (props.company === 'Corporate Function') {
     return 'bg-sky-50 text-sky-700'
+  }
+  if (props.company === 'PT Global Chemindo Megatrading') {
+    return 'bg-amber-50 text-amber-700'
   }
   return 'bg-slate-50 text-slate-600'
 })

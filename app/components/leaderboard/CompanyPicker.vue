@@ -24,6 +24,12 @@ const companies: {
     fullName: COMPANY_ROUTES.corporate,
     description: 'Leaderboard Donor Kalori untuk karyawan Corporate Function.',
   },
+  {
+    slug: 'gcm',
+    shortLabel: COMPANY_SHORT_LABELS[COMPANY_ROUTES.gcm],
+    fullName: COMPANY_ROUTES.gcm,
+    description: 'Leaderboard Donor Kalori untuk karyawan PT Global Chemindo Megatrading.',
+  },
 ]
 
 const rootRef = ref<HTMLElement | null>(null)
@@ -52,7 +58,7 @@ runAfterPaint(() => {
     <LeaderboardBackgroundAnimatedBackground />
     <LeaderboardBackgroundFloatingParticles />
 
-    <div class="relative z-10 mx-auto w-full max-w-3xl">
+    <div class="relative z-10 mx-auto w-full max-w-5xl">
       <div data-enter-title class="mb-8 text-center sm:mb-10">
         <div
           class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-kalbe-lime to-kalbe-green shadow-lime"
@@ -71,7 +77,7 @@ runAfterPaint(() => {
         </p>
       </div>
 
-      <div class="grid gap-4 sm:grid-cols-2 sm:gap-5">
+      <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
         <NuxtLink
           v-for="company in companies"
           :key="company.slug"

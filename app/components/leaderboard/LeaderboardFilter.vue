@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { Search, X, SlidersHorizontal } from 'lucide-vue-next'
+import {
+  ALLOWED_COMPANIES,
+  COMPANY_SHORT_LABELS,
+} from '~/constants/leaderboard'
 import type { CompanyFilter, GenderFilter, SortBy } from '~/types/leaderboard'
 
 withDefaults(defineProps<{
@@ -38,8 +42,11 @@ const genderOptions: { value: GenderFilter, label: string }[] = [
 
 const companyOptions: { value: CompanyFilter, label: string, short: string }[] = [
   { value: 'all', label: 'All', short: 'All' },
-  { value: 'PT Agroveta Husada Dharma', label: 'PT Agroveta Husada Dharma', short: 'Agroveta' },
-  { value: 'Corporate Function', label: 'Corporate Function', short: 'Corporate' },
+  ...ALLOWED_COMPANIES.map(company => ({
+    value: company,
+    label: company,
+    short: COMPANY_SHORT_LABELS[company],
+  })),
 ]
 
 const sortOptions: { value: SortBy, label: string }[] = [

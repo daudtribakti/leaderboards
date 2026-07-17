@@ -1,6 +1,8 @@
+import type { AllowedCompany } from '~/constants/leaderboard'
+
 export type Gender = 'male' | 'female'
 export type GenderFilter = 'all' | Gender
-export type CompanyFilter = 'all' | 'PT Agroveta Husada Dharma' | 'Corporate Function'
+export type CompanyFilter = 'all' | AllowedCompany
 export type SortBy = 'points' | 'alpha' | 'rank'
 
 export type LeaderboardLoadStage =

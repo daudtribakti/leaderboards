@@ -21,18 +21,19 @@ const hrScoreStartDelay = computed(() => props.hrScoreDelay ?? scoreStartDelay.v
 const countersReady = computed(() => (props.animationKey ?? 0) > 0)
 const mainCounterKey = computed(() => `main-${props.animationKey}-${props.entry.employeeId}`)
 const hrCounterKey = computed(() => `hr-${props.animationKey}-${props.entry.employeeId}`)
+const isChampion = computed(() => props.place === 1)
 
 const theme = computed(() => {
   if (props.place === 1) {
     return {
       block: 'podium-block--gold',
       ring: 'podium-avatar-ring--gold',
-      avatar: 'h-9 w-9 text-2xs sm:h-14 sm:w-14 sm:text-base md:h-16 md:w-16 md:text-lg',
+      avatar: 'h-12 w-12 text-sm sm:h-[4.5rem] sm:w-[4.5rem] sm:text-xl md:h-20 md:w-20 md:text-2xl',
       medal: 'podium-medal--gold',
       label: '1st',
-      lift: 'sm:-translate-y-2',
+      lift: 'sm:-translate-y-4',
       info: 'podium-info-card--gold',
-      score: 'text-xs sm:text-base md:text-lg',
+      score: 'text-sm sm:text-lg md:text-xl',
     }
   }
   if (props.place === 2) {
@@ -63,25 +64,52 @@ const theme = computed(() => {
 <template>
   <article
     class="podium-card w-full min-w-0"
-    :class="[theme.lift, place === 1 && 'podium-card--champion']"
+    :class="[theme.lift, isChampion && 'podium-card--champion']"
     :aria-label="`Rank ${entry.rank}, ${displayName}${isDeveloper ? ' IT' : ''}, ${entry.currentPoints} calories`"
   >
+    <div
+      v-if="isChampion"
+      data-podium-crown
+      class="podium-champion-crown"
+      aria-hidden="true"
+    >
+      <Crown class="podium-champion-crown__icon" />
+    </div>
+
     <div data-podium-medal class="mb-1 flex justify-center sm:mb-1.5">
       <div
-        class="podium-medal inline-flex h-5 items-center gap-0.5 rounded-full px-1.5 text-[8px] font-bold sm:h-7 sm:gap-1 sm:px-2.5 sm:text-2xs"
-        :class="theme.medal"
+        class="podium-medal inline-flex items-center gap-0.5 rounded-full font-bold"
+        :class="[
+          theme.medal,
+          isChampion
+            ? 'h-6 gap-1 px-2.5 text-[9px] sm:h-8 sm:gap-1.5 sm:px-3.5 sm:text-xs'
+            : 'h-5 gap-0.5 px-1.5 text-[8px] sm:h-7 sm:gap-1 sm:px-2.5 sm:text-2xs',
+        ]"
       >
-        <Crown v-if="place === 1" class="h-2.5 w-2.5 shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+        <Crown v-if="isChampion" class="h-3 w-3 shrink-0 sm:h-4 sm:w-4" aria-hidden="true" />
         <Medal v-else class="h-2.5 w-2.5 shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-        {{ theme.label }}
+        <span v-if="isChampion" class="tracking-wide">Champion</span>
+        <span v-else>{{ theme.label }}</span>
       </div>
     </div>
 
-    <div class="relative mx-auto mb-1.5 w-fit sm:mb-2.5">
+    <div
+      class="relative mx-auto mb-1.5 w-fit sm:mb-2.5"
+      :class="isChampion && 'podium-champion-avatar-wrap'"
+    >
+      <template v-if="isChampion">
+        <span class="podium-champion-rays" data-podium-rays aria-hidden="true" />
+        <span class="podium-champion-aura" aria-hidden="true" />
+        <span class="podium-champion-sparkle podium-champion-sparkle--1" aria-hidden="true" />
+        <span class="podium-champion-sparkle podium-champion-sparkle--2" aria-hidden="true" />
+        <span class="podium-champion-sparkle podium-champion-sparkle--3" aria-hidden="true" />
+        <span class="podium-champion-sparkle podium-champion-sparkle--4" aria-hidden="true" />
+      </template>
+
       <div
         data-podium-avatar
-        class="podium-avatar flex shrink-0 items-center justify-center rounded-full font-bold text-white"
-        :class="[theme.avatar, theme.ring]"
+        class="podium-avatar relative z-[1] flex shrink-0 items-center justify-center rounded-full font-bold text-white"
+        :class="[theme.avatar, theme.ring, isChampion && 'podium-avatar--champion']"
         :style="{ background: avatarBg }"
         aria-hidden="true"
       >
@@ -99,7 +127,7 @@ const theme = computed(() => {
     <div
       data-podium-info
       class="podium-info-card mb-1.5 w-full rounded-lg sm:mb-2.5 sm:rounded-xl sm:px-2.5 sm:py-2"
-      :class="theme.info"
+      :class="[theme.info, isChampion && 'podium-info-card--champion']"
     >
       <div class="flex justify-center px-0.5">
         <LeaderboardEmployeeName
@@ -116,14 +144,20 @@ const theme = computed(() => {
         class="score-text mt-1 flex items-center justify-center gap-0.5 font-bold sm:mt-1.5 sm:gap-1"
         :class="theme.score"
       >
-        <TrendingUp class="h-2.5 w-2.5 shrink-0 text-kalbe-lime sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-        <LeaderboardAnimatedCounter
-          :key="mainCounterKey"
-          :value="entry.currentPoints"
-          :play="countersReady"
-          :start-delay="scoreStartDelay"
-          :duration="2.4"
+        <TrendingUp
+          class="h-2.5 w-2.5 shrink-0 sm:h-3.5 sm:w-3.5"
+          :class="isChampion ? 'text-amber-500' : 'text-kalbe-lime'"
+          aria-hidden="true"
         />
+        <span :class="isChampion && 'podium-score--champion'">
+          <LeaderboardAnimatedCounter
+            :key="mainCounterKey"
+            :value="entry.currentPoints"
+            :play="countersReady"
+            :start-delay="scoreStartDelay"
+            :duration="2.4"
+          />
+        </span>
       </p>
 
       <p class="mt-1 flex items-center justify-center gap-0.5 text-[8px] text-slate-400 sm:text-[10px]">
@@ -148,6 +182,7 @@ const theme = computed(() => {
     <div
       data-podium-block-wrap
       class="w-full overflow-hidden rounded-b-xl"
+      :class="isChampion && 'podium-block-wrap--champion'"
     >
       <div
         data-podium-block
@@ -155,9 +190,10 @@ const theme = computed(() => {
         :class="theme.block"
         aria-hidden="true"
       >
-        <span class="podium-block-rank font-display text-base font-extrabold sm:text-xl md:text-2xl">
-          {{ place }}
-        </span>
+        <span
+          class="podium-block-rank font-display font-extrabold"
+          :class="isChampion ? 'text-xl sm:text-3xl md:text-4xl' : 'text-base sm:text-xl md:text-2xl'"
+        >{{ place }}</span>
       </div>
     </div>
   </article>
